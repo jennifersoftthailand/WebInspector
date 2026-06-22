@@ -681,7 +681,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 		console.log('Download request received from content script');
 
 		// 현재 활성 탭에서 다운로드 실행
-		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 			if (tabs[0]) {
 				try {
 					chrome.tabs.sendMessage(tabs[0].id, {

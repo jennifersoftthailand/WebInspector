@@ -508,7 +508,7 @@ class StateManager {
             lastActivationTime: 0,
             ACTIVATION_COOLDOWN: 500,
 
-            canActivate: function () {
+            canActivate() {
                 if (this.isActivating || this.isDeactivating) {
                     console.log('Activation blocked: already in progress');
                     return false;
@@ -521,7 +521,7 @@ class StateManager {
                 return true;
             },
 
-            enqueueActivation: function (callback) {
+            enqueueActivation(callback) {
                 const now = Date.now();
                 if (now - this.lastActivationTime < this.ACTIVATION_COOLDOWN) {
                     if (!this.activationQueue.includes(callback)) {
@@ -533,7 +533,7 @@ class StateManager {
                 return true;
             },
 
-            processNextActivation: function () {
+            processNextActivation() {
                 if (this.activationQueue.length > 0) {
                     const callback = this.activationQueue.shift();
                     this.lastActivationTime = Date.now();
@@ -541,7 +541,7 @@ class StateManager {
                 }
             },
 
-            reset: function () {
+            reset() {
                 this.isActivating = false;
                 this.isDeactivating = false;
                 this.activationQueue = [];
@@ -907,7 +907,7 @@ class StateManager {
 
         // ✅ Chrome Storage에서도 시도
         if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-            chrome.storage.sync.get(null, function(items) {
+            chrome.storage.sync.get(null, (items) => {
                 if (items && items.webinspector_config && items.webinspector_config.options) {
                     try {
                         localStorage.setItem('webinspector_options', JSON.stringify(items.webinspector_config.options));

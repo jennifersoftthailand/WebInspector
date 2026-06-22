@@ -369,7 +369,7 @@ class DownloadManager {
 			.then(response => response.blob())
 			.then(blob => {
 				const reader = new FileReader();
-				reader.onloadend = function () {
+				reader.onloadend = () => {
 					callback(reader.result);
 				};
 				reader.readAsDataURL(blob);

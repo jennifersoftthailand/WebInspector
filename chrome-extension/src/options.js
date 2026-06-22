@@ -92,12 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
 		const formatHtmlElement = document.getElementById('formatHtml');
 		if (formatHtmlElement) {
 			// 기존 이벤트 리스너 제거 후 새로 등록
-			formatHtmlElement.removeEventListener('change', function() {
-				saveOptions();
-			});
-			formatHtmlElement.addEventListener('change', function() {
-				saveOptions();
-			});
+			formatHtmlElement.removeEventListener('change', () => { saveOptions(); });
+			formatHtmlElement.addEventListener('change', () => { saveOptions(); });
 		}
 
 		// 7. 초기화 버튼 이벤트 (기존 동작 유지)
@@ -846,7 +842,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		saveToLegacyCache(options);
 
 		// 활성 탭에 메시지 전송
-		chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+		chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 			if (!tabs || tabs.length === 0) return;
 
 			const currentTab = tabs[0];
@@ -855,10 +851,9 @@ document.addEventListener('DOMContentLoaded', function () {
 			chrome.tabs.sendMessage(currentTab.id, {
 				action: 'updateOptions',
 				options: options
-			}, function (response) {
-				// 콜백 함수를 제공하여 에러 완전 흡수
+			}, () => {
 				if (chrome.runtime.lastError) {
-					// 절대 로그도 출력하지 않음 - 완전 무시
+					// 완전 무시
 				}
 			});
 		});

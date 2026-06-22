@@ -1475,11 +1475,11 @@ class ElementInfo {
 		
 		// 드래그 핸들러에 저장 기능 연결
 		const originalStopDrag = this.stopDrag.bind(this);
-		this.stopDrag = function(e) {
+		this.stopDrag = (e) => {
 			originalStopDrag(e);
 			console.log('💾 Saving position after drag...');
 			this.savePanelState();
-		}.bind(this);
+		};
 	}
 
 	/**

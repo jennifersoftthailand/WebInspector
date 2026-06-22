@@ -1,5 +1,5 @@
 // main-content.js
-(function () {
+(() => {
 	'use strict';
 
 	console.log('🚀 Web Inspector Main Content Script starting...');
@@ -8,8 +8,8 @@
 	let componentInitializationCount = 0;
 	let lastCleanupTime = 0;
 
-	// ✅ 추가: 스크롤 상태 관리 변수들
-	let lastMousePosition = { 
+	// ✅ 스크롤 상태 관리 변수들
+	const lastMousePosition = { 
 		clientX: 0, 
 		clientY: 0,
 		lastUpdated: 0
@@ -18,7 +18,7 @@
 	const SCROLL_END_DELAY = 150; // 스크롤 끝난 후 표시까지 딜레이
 	let isScrolling = false;
 
-	// ✅ [수정] 전역 변수들만 선언하고 초기화는 지연
+	// ✅ 전역 변수들만 선언하고 초기화는 지연
 	let stateManager = null;
 	let elementAnalyzer = null;
 	let uiManager = null;
@@ -27,7 +27,7 @@
 	let toggleManager = null;
 	let elementInfo = null;
 
-	// ✅ [수정] 초기화 플래그 추가
+	// ✅ 초기화 플래그 추가
 	let isInitialized = false;
 	let initializationPending = false;
 
@@ -41,10 +41,9 @@
 	const configManager = window.ConfigManager;
 
 
-	// 전역에 노출 (디버깅용) 맨 아래 window.WebInspector = window.webInspector; 선언 필요.
-	// 외부 class에서 _XXXXX 메소드를 호출 할 수 있도록 함.
+	// 전역에 노출 (디버깅용)
 	window.webInspector = {
-		// ✅ [수정] 게터로 지연 초기화 제공
+		// ✅ 게터로 지연 초기화 제공
 		get stateManager() { return initializeIfNeeded().stateManager; },
 		get elementAnalyzer() { return initializeIfNeeded().elementAnalyzer; },
 		get uiManager() { return initializeIfNeeded().uiManager; },
@@ -53,55 +52,47 @@
 		activateInspector,
 		deactivateInspector,
 
-		// ✅ [수정] 안전한 메서드들 - 초기화 확인 후 실행
-		_safeStorageSet: function (items, callback) {
+		// ✅ 안전한 메서드들 - 초기화 확인 후 실행
+		_safeStorageSet: (items, callback) => {
 			if (!isInitialized) {
 				console.log('🔄 Web Inspector not initialized, skipping storage set');
 				if (callback) callback();
 				return;
 			}
-			console.log('++++++++++++++>>> _safeStorageSet');
-			safeStorageSet(items, callback);
+			if (util) util.safeStorageSet(items, callback);
 		},
 
-		_restoreAdjustedElements: function () {
+		_restoreAdjustedElements: () => {
 			if (!isInitialized) {
 				console.log('🔄 Web Inspector not initialized, skipping restore');
 				return;
 			}
-			console.log('++++++++++++++>>> _restoreAdjustedElements');
-			restoreAdjustedElements();
+			if (util) util.restoreAdjustedElements();
 		},
 
-		_safePostMessage: function (targetWindow, message, targetOrigin) {
+		_safePostMessage: (targetWindow, message, targetOrigin) => {
 			if (!isInitialized) {
 				console.log('🔄 Web Inspector not initialized, skipping post message');
 				return false;
 			}
-			console.log('++++++++++++++>>> _safePostMessage');
-			return safePostMessage(targetWindow, message, targetOrigin);
+			if (util) return util.safePostMessage(targetWindow, message, targetOrigin);
+			return false;
 		},
 
-		// ✅ [추가] 초기화 상태 확인 메서드
-		isInitialized: function() {
-			return isInitialized;
-		},
+		// ✅ 초기화 상태 확인 메서드
+		isInitialized: () => isInitialized,
 
-		// ✅ [추가] 강제 초기화 메서드 (activate 시 사용)
-		forceInitialize: function() {
-			return initializeComponents();
-		}
+		// ✅ 강제 초기화 메서드 (activate 시 사용)
+		forceInitialize: () => initializeComponents()
 	};
 
-	// ✅ [추가] 필요한 경우에만 초기화하는 함수
+	// ✅ 필요한 경우에만 초기화하는 함수
 	function initializeIfNeeded() {
 		if (!isInitialized && !initializationPending) {
 			console.log('⚠️ Web Inspector components accessed before initialization - forcing activation');
-			// 필요한 경우 즉시 초기화 시도
 			activateInspector();
 		}
 		
-		// 초기화 여부에 따라 다른 객체 반환
 		if (isInitialized) {
 			return {
 				stateManager,
@@ -201,7 +192,7 @@
 		// ✅ 1. 글로벌 이벤트 리스너 제거
 		removeAllEventListeners();
 		
-		// ✅ 2. ToggleManager 먼저 정리 (드래그 시스템 정리를 위해)
+		// ✅ 2. ToggleManager 먼저 정리
 		if (toggleManager) {
 			console.log('🧹 Cleaning up ToggleManager (priority)...');
 			if (typeof toggleManager.completeCleanup === 'function') {
@@ -264,7 +255,7 @@
 			util = null;
 		}
 		
-		// ✅ 5. StateManager 마지막에 정리 (다른 컴포넌트 참조 제거 후)
+		// ✅ 5. StateManager 마지막에 정리
 		if (stateManager) {
 			console.log('🧹 Cleaning up StateManager...');
 			if (typeof stateManager.completeCleanup === 'function') {
@@ -290,7 +281,7 @@
 	function onMouseMove(e) {
 		if (!stateManager || !stateManager.isInspectorActive) return;
 		
-		// ✅ [수정] 항상 현재 마우스 위치 업데이트
+		// ✅ 항상 현재 마우스 위치 업데이트
 		lastMousePosition.clientX = e.clientX;
 		lastMousePosition.clientY = e.clientY;
 		lastMousePosition.lastUpdated = Date.now();
@@ -337,7 +328,7 @@
 	 * ✅ [이벤트 핸들러] onElementClick - 통일된 명명 규칙
 	 */
 	function onElementClick(e) {
-		// ✅ [수정] 안전한 접근
+		// ✅ 안전한 접근
 		if (!stateManager || !stateManager.isInspectorActive) return;
 
 		// UI 요소 클릭 무시
@@ -385,10 +376,8 @@
 		
 		// 요소 선택 로직
 		if (stateManager.selectedElement === clickedElement) {
-			// 같은 요소 클릭 시 선택 해제
 			if (elementAnalyzer) {
 				elementAnalyzer.removeSelectedElement();
-				// ✅ 패널도 숨기기
 				if (stateManager.uiManager) {
 					stateManager.uiManager.hidePanel();
 				}
@@ -418,17 +407,15 @@
 	 * ✅ 더블 ESC 액션 (B) 
 	 */
 	function executeDoubleEscAction() {
-		
 		console.log('음하하하하하하하하 - Double ESC completed!');
 	}
-
 	//------------------------------------------------------------------------------------------------- Esc END
 
 	/**
 	 * ✅ [이벤트 핸들러] onKeyDown - 통일된 명명 규칙
 	 */
 	function onKeyDown(e) {
-		// ✅ [수정] 안전한 접근 + 단축키 작동 보장
+		// ✅ 안전한 접근 + 단축키 작동 보장
 		if (!stateManager || !stateManager.isInspectorActive) return;
 
 		if (e.key === 'Escape') {
@@ -446,7 +433,7 @@
 				executeDoubleEscAction();
 				
 			} else {
-				// ✅ 첫 번째 ESC 입력 - 타임아웃 설정 (A는 아직 실행 안 함)
+				// ✅ 첫 번째 ESC 입력 - 타임아웃 설정
 				console.log('🔑 First ESC - Waiting for second...');
 				isWaitingForSecondEsc = true;
 				
@@ -464,7 +451,7 @@
 			return;
 		}
 
-		// ✅ [수정] Ctrl + Alt 단축키 처리 - 작동 보장
+		// ✅ Ctrl + Alt 단축키 처리
 		if (e.ctrlKey && e.altKey && !e.shiftKey) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -484,24 +471,20 @@
 			};
 
 			if (modeMap[key]) {
-				
 				console.log(`🔧 Toggling measurement mode: ${modeMap[key]}`);
 				if (uiManager) {
-					// ✅ [수정] UI Manager를 통한 모드 토글 (작동 보장)
 					uiManager.toggleMeasurementModeManager(modeMap[key]);
 				} else if (stateManager) {
-					// ✅ [추가] UI Manager 없을 때 직접 StateManager 호출
 					stateManager.saveToggleMeasurementMode(modeMap[key]);
 					console.log(`✅ Mode toggled directly: ${modeMap[key]}`);
 				}
-				
 			} else {
 				console.log(`❌ No mapping for key: ${key}`);
 			}
 			return;
 		}
 
-		// ✅ [수정] 추가 단축키: Ctrl + Shift 단축키 작동 보장
+		// ✅ Ctrl + Shift 단축키
 		if (e.ctrlKey && e.shiftKey && !e.altKey) {
 			e.preventDefault();
 			e.stopPropagation();
@@ -550,7 +533,7 @@
 			}
 		}
 
-		// ✅ [추가] Alt 단독 단축키
+		// ✅ Alt 단독 단축키
 		if (e.altKey && !e.ctrlKey && !e.shiftKey) {
 			const key = e.key.toLowerCase();
 			
@@ -566,7 +549,6 @@
 				
 				switch(altModeMap[key]) {
 					case 'toggleHighlight':
-						// 하이라이트 토글 로직
 						console.log('🎯 Toggling highlight via Alt+H');
 						break;
 						
@@ -608,7 +590,7 @@
 			console.log('📜 Scroll started - positions updated, measurements hidden');
 		}
 
-		// ✅ 스크롤 중 실시간 위치 업데이트 (부드러운 이동)
+		// ✅ 스크롤 중 실시간 위치 업데이트
 		requestAnimationFrame(() => {
 			updateAllElementPositions();
 		});
@@ -634,7 +616,7 @@
 	}
 
 	/**
-	 * ✅ [내부] _performSafeDirectActivation - private 함수로 변경
+	 * ✅ [내부] _performSafeDirectActivation - private 함수
 	 */
 	function _performSafeDirectActivation() {
 		return new Promise((resolve, reject) => {
@@ -644,7 +626,7 @@
 					throw new Error('StateManager or InspectorState not available');
 				}
 				
-				// ✅ 활성화 상태 설정 (안전하게)
+				// ✅ 활성화 상태 설정
 				stateManager.InspectorState.isActivating = true;
 				
 				// ✅ 직접 활성화 수행
@@ -661,7 +643,6 @@
 				
 				resolve();
 			} catch (error) {
-				// ✅ 에러 발생 시 상태 안전하게 복원
 				safeResetActivationState();
 				reject(error);
 			}
@@ -669,16 +650,14 @@
 	}
 
 	/**
-	 * ✅ [내부] _handleActivationError - private 함수로 변경
+	 * ✅ [내부] _handleActivationError - private 함수
 	 */
 	function _handleActivationError(error) {
 		console.error('❌ Activation error handled:', error.message);
 		safeResetActivationState();
 		
-		// ✅ 상태 동기화
 		syncInspectorStatus(false);
 		
-		// ✅ 필요한 경우 컴포넌트 재생성
 		if (error.message.includes('StateManager') || error.message.includes('InspectorState')) {
 			console.log('🔄 Scheduling component recreation due to StateManager error');
 			setTimeout(() => {
@@ -687,20 +666,13 @@
 		}
 	}
 
-	// 활성화/비활성화 함수들
-	// ✅ [수정] 활성화 함수 - 초기화 통합
-	// ✅ [수정] 활성화 함수 - Config 먼저 로드
-	// ✅ [수정] 활성화 함수 - 에러 처리 강화
 	/**
 	 * ✅ activateInspector - 토글버튼 통합 강화 (중첩 실행 방지)
-	 */
-	/**
-	 * ✅ [수정] activateInspector - 내부 함수 호출 업데이트
 	 */
 	function activateInspector() {
 		console.log('🎯 activateInspector called from toggle button');
 		
-		// ✅ 이미 활성화되었으면 무시 (안전한 접근)
+		// ✅ 이미 활성화되었으면 무시
 		if (window.webInspector && window.webInspector.getStatus && window.webInspector.getStatus().isActive) {
 			console.log('✅ Web Inspector already active, skipping activation');
 			return Promise.resolve();
@@ -714,7 +686,7 @@
 				const startTime = Date.now();
 				const maxWaitTime = 3000;
 				
-				const waitForInitialization = () => {
+				const waitForInit = () => {
 					if (!initializationPending && isInitialized && stateManager) {
 						console.log('✅ Initialization completed, proceeding with activation');
 						activateInspector().then(resolve);
@@ -722,45 +694,37 @@
 						console.error('❌ Activation timeout waiting for initialization');
 						resolve();
 					} else {
-						setTimeout(waitForInitialization, 100);
+						setTimeout(waitForInit, 100);
 					}
 				};
 				
-				waitForInitialization();
+				waitForInit();
 			});
 		}
 
-		// ✅ 컴포넌트 초기화 (동기적으로 상태 관리)
+		// ✅ 컴포넌트 초기화
 		return initializeComponents().then(() => {
 			console.log('🔄 Components initialized, starting activation process...');
 			
-			// ✅ StateManager 검증 (강화된 검사)
 			if (!isComponentValid('stateManager')) {
 				throw new Error('StateManager validation failed after initialization');
 			}
 			
 			return stateManager.loadConfig().catch(error => {
 				console.log('⚠️ Config load failed, using defaults:', error);
-				// ✅ config 로드 실패해도 진행
 				return null;
 			});
 		}).then(() => {
 			console.log('✅ Config loaded, performing direct activation');
 
 			// ✅ [ConfigManager 연동] ConfigManager의 사용자 설정을 StateManager.options에 병합
-			// StateManager.loadConfig()는 세션 상태(활성 모드, Depth 등)를 관리하고,
-			// ConfigManager는 사용자 설정(색상, 두께, 투명도 등 44개)을 중앙 관리합니다.
-			// 따라서 StateManager.options의 값은 ConfigManager.getAll()로 덮어씁니다.
 			if (configManager) {
 				const userSettings = configManager.getAll();
 				if (userSettings && Object.keys(userSettings).length > 0) {
-					// ConfigManager의 모든 사용자 설정을 StateManager.options에 병합
-					// 기존 options 값은 보존하고 ConfigManager 값이 우선 적용됨
 					const mergedOptions = { ...stateManager.options, ...userSettings };
 					stateManager.options = mergedOptions;
 					console.log('✅ [ConfigManager] 사용자 설정(색상/두께/투명도 등)을 StateManager에 병합 완료');
 					
-					// ✅ Depth 레벨 동기화 (ConfigManager의 defaultDepthLevel을 우선 사용)
 					if (userSettings.defaultDepthLevel !== undefined) {
 						stateManager.currentDepthLevel = parseInt(userSettings.defaultDepthLevel) || 2;
 						console.log('✅ [ConfigManager] Depth 레벨 동기화:', stateManager.currentDepthLevel);
@@ -772,37 +736,34 @@
 				console.log('ℹ️ [ConfigManager] ConfigManager를 찾을 수 없음 (로드 순서 확인)');
 			}
 			
-			// ✅ 최종 StateManager 검증
 			if (!isComponentValid('stateManager')) {
 				throw new Error('StateManager not available for direct activation');
 			}
 			
-			return _performSafeDirectActivation(); // ✅ _performSafeDirectActivation으로 변경
+			return _performSafeDirectActivation();
 		}).then(() => {
 			console.log('✅ Activation completed successfully');
 			return true;
 		}).catch(error => {
 			console.error('❌ Activation process failed:', error);
-			_handleActivationError(error); // ✅ _handleActivationError로 변경
+			_handleActivationError(error);
 			return false;
 		});
 	}
 	//########################################################################################################################>>> END
 
-	// ✅ 기존 스크롤 이벤트 리스너 제거 후 새로운 핸들러 등록
 	/**
-	 * ✅ [수정] setupEventListenersFallback - 이벤트 핸들러 호출 업데이트
+	 * ✅ setupEventListenersFallback - 이벤트 핸들러 등록
 	 */
 	function setupEventListenersFallback() {
 		console.log('Setting up fallback event listeners...');
 
 		try {
-			// ✅ 간소화: 이벤트 타입만 정의하고 일괄 등록
 			const eventTypes = [
-				{ type: 'mousemove', handler: onMouseMove, useCapture: false },        // ✅ onMouseMove로 변경
-				{ type: 'click', handler: onElementClick, useCapture: true },          // ✅ onElementClick로 변경
-				{ type: 'keydown', handler: onKeyDown, useCapture: false },            // ✅ onKeyDown로 변경
-				{ type: 'scroll', handler: onScroll, useCapture: false }               // ✅ onScroll로 변경
+				{ type: 'mousemove', handler: onMouseMove, useCapture: false },
+				{ type: 'click', handler: onElementClick, useCapture: true },
+				{ type: 'keydown', handler: onKeyDown, useCapture: false },
+				{ type: 'scroll', handler: onScroll, useCapture: false }
 			];
 
 			eventTypes.forEach(({ type, handler, useCapture }) => {
@@ -818,7 +779,7 @@
 	//################################################################################################################################
 
 	
-	// ✅ [신규] 모든 요소 위치 업데이트 함수 - 깜빡임 방지 핵심
+	// ✅ 모든 요소 위치 업데이트 함수 - 깜빡임 방지 핵심
 	function updateAllElementPositions() {
 		if (!stateManager) return;
 		
@@ -855,22 +816,22 @@
 		}
 	}
 
-	// ✅ [신규] 엄격한 뷰포트 내부 검사 함수
+	// ✅ 엄격한 뷰포트 내부 검사 함수
 	function isElementInViewport(rect) {
 		return (
 			rect.width > 0 && 
 			rect.height > 0 &&
-			rect.right >= -10 &&      // ✅ 약간의 여유 있게
+			rect.right >= -10 &&
 			rect.bottom >= -10 &&
 			rect.left <= window.innerWidth + 10 &&
 			rect.top <= window.innerHeight + 10
 		);
 	}
-	// ✅ [재설계] 즉시 숨기기 함수 - 뷰포트 경계 문제 해결
+
+	// ✅ 즉시 숨기기 함수 - 뷰포트 경계 문제 해결
 	function hideAllMeasurementsInstantly() {
 		if (!stateManager) return;
 
-		// ✅ 모든 측정 관련 요소들 즉시 숨기기
 		const measurementSelectors = [
 			'.measurement-line', '.measurement-text',
 			'.size-line-extended', '.size-line-vertical-extended',
@@ -886,21 +847,19 @@
 			const elements = document.querySelectorAll(selector);
 			elements.forEach(element => {
 				if (element && !element.classList.contains('selected-element')) {
-					// ✅ visibility로 즉시 완전 숨기기
 					element.style.visibility = 'hidden';
 					element.style.display = 'none';
 				}
 			});
 		});
 
-		// ✅ UI 요소들 숨기기
 		if (stateManager.coordTooltip) stateManager.coordTooltip.style.visibility = 'hidden';
 	}
-	// ✅ [재설계] 즉시 표시 함수 - 한 번에 깔끔하게
+
+	// ✅ 즉시 표시 함수
 	function showAllMeasurementsInstantly() {
 		if (!stateManager) return;
 
-		// ✅ 모든 측정 관련 요소들 즉시 표시
 		const measurementSelectors = [
 			'.measurement-line', '.measurement-text',
 			'.size-line-extended', '.size-line-vertical-extended',
@@ -916,17 +875,14 @@
 			const elements = document.querySelectorAll(selector);
 			elements.forEach(element => {
 				if (element && !element.classList.contains('selected-element')) {
-					// ✅ visibility로 즉시 완전 표시
 					element.style.visibility = 'visible';
 					element.style.display = 'block';
 				}
 			});
 		});
 
-		// ✅ UI 요소들 표시
 		if (stateManager.coordTooltip) stateManager.coordTooltip.style.visibility = 'visible';
 
-		// ✅ 선택된 요소가 있으면 해당 요소 측정값 업데이트
 		if (stateManager.selectedElement && elementAnalyzer) {
 			setTimeout(() => {
 				elementAnalyzer.updateSelectedElementMeasurements();
@@ -935,26 +891,19 @@
 	}
 
 
-	// ✅ [신규] 현재 마우스 커서 위치에서 요소 인식 함수
-	// ✅ [수정] 현재 마우스 커서 위치에서 요소 인식 함수 - 선택된 요소 우선 처리
-	// ✅ [재설계] 정확한 마우스 위치 요소 인식 함수
-	// ✅ [수정] 정확한 마우스 위치 요소 인식 함수 - 올바른 함수 호출
-	// ✅ [수정] 정확한 마우스 위치 요소 인식 함수 - 선택된 요소 있어도 하이라이트 허용
+	// ✅ 정확한 마우스 위치 요소 인식 함수
 	function recognizeElementAtExactMousePosition() {
 		if (!stateManager || !elementAnalyzer) return;
 		
-		// ✅ [수정] 선택된 요소가 있어도 하이라이트는 허용 (측정값만 차단)
 		if (stateManager.selectedElement) {
 			console.log('🎯 Selected element exists - allowing highlight only (no measurements)');
 			
-			// ✅ 선택된 요소 측정값 업데이트
 			setTimeout(() => {
 				if (elementAnalyzer && stateManager.selectedElement) {
 					elementAnalyzer.updateSelectedElementMeasurements();
 				}
 			}, 50);
 			
-			// ✅ [핵심 수정] 선택된 요소가 있어도 현재 마우스 위치 하이라이트 표시
 			const currentViewportX = lastMousePosition.clientX;
 			const currentViewportY = lastMousePosition.clientY;
 			
@@ -963,12 +912,10 @@
 			
 			console.log(`🎯 Showing highlight with selected element - Viewport: (${currentViewportX}, ${currentViewportY})`);
 			
-			// ✅ 선택된 요소가 있어도 하이라이트 표시 (측정값은 생성 안됨)
 			elementAnalyzer.highlightElementAtPoint(documentX, documentY);
 			return;
 		}
 		
-		// ✅ 선택된 요소가 없을 때는 일반적인 마우스 위치 기반 요소 인식
 		const currentViewportX = lastMousePosition.clientX;
 		const currentViewportY = lastMousePosition.clientY;
 		
@@ -981,16 +928,12 @@
 	}
 
 	
-	// ✅ 수정: 측정값 위치 업데이트 함수
+	// ✅ 측정값 위치 업데이트 함수
 	function updateAllMeasurementPositions() {
-		// 선택된 요소가 있으면 해당 요소 측정값 업데이트
 		if (stateManager.selectedElement) {
-			//console.log('🔄 Updating selected element measurements after scroll');
 			stateManager.elementAnalyzer.updateSelectedElementMeasurements();
 		}
-		// 현재 하이라이트 요소가 있으면 해당 요소 측정값 업데이트
 		else if (stateManager.currentElement) {
-			//console.log('🔄 Updating current element measurements after scroll');
 			stateManager.elementAnalyzer.updateMeasurements();
 		}
 	}
@@ -1036,13 +979,10 @@
 		}
 	}
 
-	// ✅ [수정] directActivation 함수 - 초기화 확인
-	// ✅ [수정] directActivation 함수 - Config 적용 후 UI 생성
-	// ✅ [수정] directActivation 함수 - 동기 함수로 유지
+	// ✅ directActivation 함수 - 동기 함수로 유지
 	function directActivation() {
 		console.log('Performing direct activation');
 
-		// ✅ 초기화 확인
 		if (!isInitialized) {
 			console.error('❌ Components not initialized for activation');
 			throw new Error('Web Inspector components not initialized');
@@ -1051,12 +991,8 @@
 		try {
 			stateManager.isInspectorActive = true;
 
-
-			// 기존 UI 요소 완전 제거
 			uiManager.removeAllUIElements();
 
-
-			// ✅ UI 요소 생성 (Config 적용 후)
 			try {
 				uiManager.createUIElements();
 			} catch (uiError) {
@@ -1064,10 +1000,8 @@
 				throw uiError;
 			}
 
-			// 이벤트 리스너 등록
 			setupEventListenersFallback();
 
-			// 초기 설정
 			uiManager.updateCoordTooltipPosition();
 
 			console.log('✅ Direct activation completed successfully');
@@ -1108,26 +1042,21 @@
 	function deactivateInspector(completeShutdown = true) {
 		console.log('🔴 Deactivating inspector from toggle button, complete shutdown:', completeShutdown);
 
-		// ✅ 초기화되지 않았거나 초기화 중이면 무시
 		if (!isInitialized || initializationPending) {
 			console.log('🔄 Web Inspector not properly initialized, skipping deactivation');
 			return;
 		}
 
-		// ✅ 상태 먼저 변경하여 추가 활성화 방지
 		if (stateManager) {
 			stateManager.isInspectorActive = false;
 			stateManager.InspectorState.isDeactivating = true;
 		}
 
 		try {
-			// ✅ 모든 이벤트 리스너 즉시 제거
 			removeAllEventListeners();
 			
-			// ✅ 토글버튼으로부터의 종료는 항상 완전 종료
 			completeComponentCleanup();
 			
-			// ✅ 상태 동기화 메시지
 			try {
 				chrome.runtime.sendMessage({
 					action: 'statusChanged', 
@@ -1139,7 +1068,6 @@
 
 		} catch (error) {
 			console.error('❌ Deactivation error from toggle button:', error);
-			// ✅ 에러 발생 시에도 emergencyCleanup 보장
 			emergencyCleanup();
 		} finally {
 			if (stateManager) {
@@ -1149,10 +1077,6 @@
 		
 		console.log('✅ Deactivation completed from toggle button');
 	}
-
-
-
-
 
 
 	// ✅ 모든 이벤트 리스너 제거 함수
@@ -1167,31 +1091,19 @@
 			document.removeEventListener(event, onScroll, false);
 		});
 		
-		// ✅ window 메시지 리스너 제거 시도
 		try {
-			window.removeEventListener('message', windowMessageHandler);
+			window.removeEventListener('message', window.handleWindowMessage);
 		} catch (e) {}
 		
 		console.log('✅ All event listeners removed');
 	}
 
 
-	// emergencyCleanup은 DOM 요소 강제 제거에 집중해야 함
+	// emergencyCleanup은 DOM 요소 강제 제거에 집중
 	function emergencyCleanup() {
 		console.log('🚨 EMERGENCY: Performing aggressive cleanup...');
 		
 		try {
-			// ✅ 컴포넌트 정리는 completeComponentCleanup에서 처리하므로 여기서는 제거
-			// ❌ 삭제: 다음 코드들은 completeComponentCleanup과 중복됨
-			/*
-			if (elementAnalyzer) {
-				elementAnalyzer.cleanup();
-				elementAnalyzer = null;
-			}
-			// ... 다른 컴포넌트들도 마찬가지
-			*/
-
-			// ✅ DOM 요소 강제 제거에만 집중
 			const aggressiveSelectors = [
 				'#web-inspector-panel', '#ad-container', '#coord-tooltip', '#crosshair',
 				'#downloadId', '#floating-button-panel', '.ruler-button-container',
@@ -1221,7 +1133,6 @@
 				}
 			});
 
-			// ✅ 상태 동기화 메시지
 			try {
 				chrome.runtime.sendMessage({
 					action: 'statusChanged',
@@ -1239,42 +1150,11 @@
 	}
 
 
-	
-	
+	// util.js로 이동한 함수들 - 이제 Util 클래스의 메서드로 사용
+	// main-content.js에서는 util.safeStorageSet(), util.restoreAdjustedElements(), util.safePostMessage() 호출
 
-
-	function safeStorageSet(items, callback) {
-		try {
-			if (typeof chrome === 'undefined' || !chrome.storage || !chrome.storage.sync) {
-				console.log('Chrome storage API not available');
-				if (callback) setTimeout(callback, 100);
-				return;
-			}
-
-			chrome.storage.sync.set(items, function () {
-				if (chrome.runtime.lastError) {
-					console.log('Storage set error (non-critical):', chrome.runtime.lastError);
-				}
-				if (callback) callback();
-			});
-		} catch (error) {
-			console.log('Storage set exception (non-critical):', error);
-			if (callback) setTimeout(callback, 100);
-		}
-	}
-
-	function restoreAdjustedElements() {
-		stateManager.temporarilyAdjustedElements.forEach(item => {
-			if (item.element && item.element.style) {
-				item.element.style.setProperty('opacity', item.originalOpacity, 'important');
-				item.element.style.setProperty('pointer-events', item.originalPointerEvents, 'important');
-			}
-		});
-		stateManager.temporarilyAdjustedElements = [];
-	}
 
 	// 메시지 리스너 설정
-	// ✅ [수정] 메시지 리스너 설정 - 초기화 통합
 	function setupMessageListeners() {
 		let currentTabId = null;
 		
@@ -1285,14 +1165,13 @@
 			});
 		}
 
-		chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+		chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 			// ✅ sender 탭 ID 확인 (크로스-탭 메시지 필터링)
 			const isFromSameTab = sender.tab && currentTabId && sender.tab.id === currentTabId;
-			const isFromBackground = !sender.tab; // background script에서 온 메시지
+			const isFromBackground = !sender.tab;
 			
 			console.log(`📨 Message received - From tab: ${sender.tab?.id}, Current tab: ${currentTabId}, Same: ${isFromSameTab}`);
 
-			// ✅ 같은 탭에서 온 메시지만 처리 (크로스-탭 메시지 무시)
 			if (!isFromSameTab && !isFromBackground) {
 				console.log('⏭️ Ignoring cross-tab message');
 				return;
@@ -1301,26 +1180,22 @@
 			switch (request.action) {
 
 				case 'toggleMeasuring':
-					// ✅ 안전한 실행 사용
 					CoordinateLayoutUtils.safeExecute('uiManager', 'toggleMeasuring');
 					sendResponse({ success: true });
 					return true;
 
 				case 'changeMeasurementMode':
-					// ✅ 안전한 실행 사용
 					CoordinateLayoutUtils.safeExecute('uiManager', 'toggleMeasurementMode', request.mode);
 					sendResponse({ success: true });
 					return true;
 
 				case 'downloadHTML':
 					console.log('📥 Download HTML requested');
-					// ✅ 안전한 실행 사용
 					const result = CoordinateLayoutUtils.safeExecute('stateManager', 'downloadManager.downloadFullPage');
 					sendResponse({ success: !!result });
 					return true;
 					
 				case 'updateConfig':
-					// ✅ config에 탭 ID가 있으면 확인
 					if (request.config && request.config.tabId) {
 						if (stateManager && request.config.tabId !== stateManager.tabId) {
 							console.log('⏭️ Ignoring config from different tab');
@@ -1329,7 +1204,6 @@
 						}
 					}
 					
-					// ✅ [ConfigManager 연동] options.js에서 updateOptions 액션으로 보낸 설정 업데이트
 					if (configManager && request.config && request.config.options) {
 						configManager.setMultiple(request.config.options);
 						console.log('✅ [ConfigManager] updateConfig 동기화 완료');
@@ -1358,15 +1232,12 @@
 					return true;
 
 				case 'syncStatus':
-					// ✅ 상태 동기화 메시지 (안전한 접근)
 					sendResponse({ 
 						isActive: stateManager ? stateManager.isInspectorActive : false,
 						isInitialized: isInitialized
 					});
 					return true;
 
-				// ✅ [수정] 다른 액션들 - 안전한 접근
-				// ✅ [수정] 간소화
 				case 'updateDepthLevel':
 					if (stateManager) {
 						stateManager.updateDepthLevel(request.depthLevel);
@@ -1403,7 +1274,6 @@
 					return true;
 
 				case 'downloadHTML':
-					// ✅ [수정] 다운로드 매니저 직접 호출로 복구
 					console.log('📥 Download HTML requested');
 					if (stateManager && stateManager.downloadManager) {
 						stateManager.downloadManager.downloadFullPage();
@@ -1434,18 +1304,13 @@
 			}
 		});
 
-		// 윈도우 메시지 리스너
-		// ✅ 윈도우 메시지 리스너도 탭 필터링
-		window.addEventListener('message', function (event) {
+		// 윈도우 메시지 핸들러 (이름 있는 참조로 cleanup 지원)
+		window.handleWindowMessage = (event) => {
 			try {
-				
-				//------------------------------------------------------------------------------------>>> Tab별 관리 START ( 메시지 리스너 탭 필터링)
-				// ✅ 현재 탭의 StateManager가 있는지 확인
 				if (!stateManager || !isInitialized) {
 					return;
 				}
 
-				// ✅ 패널에서 온 메시지만 처리 (다른 탭의 패널 메시지 무시)
 				const isFromCurrentTabPanel = event.source === window && 
 											event.data && 
 											event.data.type;
@@ -1454,22 +1319,11 @@
 					return;
 				}
 
-				// ✅ 활성화 상태 확인
 				if (!stateManager.isInspectorActive) {
 					console.log('🔄 Inspector not active, ignoring window message');
 					return;
 				}
 
-				// ✅ 메시지 처리 (기존 로직 유지)
-				if (event.data.type === 'TOGGLE_MEASUREMENT_MODE_FROM_PANEL') {
-					console.log('🔧 Panel requested mode toggle:', event.data.mode);
-					if (uiManager && uiManager.toggleMeasurementModeManager) {
-						uiManager.toggleMeasurementModeManager(event.data.mode);
-					}
-				}
-				//------------------------------------------------------------------------------------>>> Tab별 관리 END
-
-				// ✅ 패널에서 온 측정 모드 토글 메시지 처리
 				if (event.data.type === 'TOGGLE_MEASUREMENT_MODE_FROM_PANEL') {
 					console.log('🔧 Panel requested mode toggle:', event.data.mode);
 					
@@ -1477,46 +1331,41 @@
 						uiManager.toggleMeasurementModeManager(event.data.mode);
 					}
 				}
-				// ✅ 패널 위치 변경 메시지 처리
 				else if (event.data.type === 'PANEL_POSITION_CHANGED') {
-					
-					// ✅ 패널 위치 업데이트
 					stateManager.options.panelPosition = event.data.position;
 					if (uiManager) {
 						uiManager.updatePanelPosition();
 						uiManager.updatePanelPositionUI(event.data.position);
 					}
 					
-					// ✅ storage에 저장
-					if (window.WebInspector && window.WebInspector._safeStorageSet) {
-						window.WebInspector._safeStorageSet({ panelPosition: event.data.position });
+					if (util) {
+						util.safeStorageSet({ panelPosition: event.data.position });
 					}
 				}
-				else if (event.data.type === 'TGLPNL_VISIBILITY') { //----> Esc: 패널 숨기기
+				else if (event.data.type === 'TGLPNL_VISIBILITY') {
 					if (uiManager) {
 						uiManager.togglePanelVisibility();
 					}
 					return true;
 				}
-				else if (event.data.type === 'TGLPNL_CLOSE') { //----> 패널 숨기기
+				else if (event.data.type === 'TGLPNL_CLOSE') {
 					console.log('--------------->>> TGLPNL_CLOSE');
 					if (uiManager) {
 						uiManager.togglePanelVisibilityOnOff(true);
 					}
 					return true;
 				}
-				// ... 기타 메시지 처리 (모두 stateManager와 uiManager 안전하게 접근)
 				
 			} catch (error) {
 				console.log('❌ Window message handling error:', error);
 			}
-		});
+		};
+		window.addEventListener('message', window.handleWindowMessage);
 	}
 
 
-	// ✅ [추가] 글로벌 에러 핸들러
-	window.addEventListener('error', function(e) {
-		// ✅ "Cannot read properties of null" 에러 무시 또는 로깅
+	// ✅ 글로벌 에러 핸들러
+	window.addEventListener('error', (e) => {
 		if (e.error && e.message && e.message.includes('Cannot read properties of null')) {
 			console.log('⚠️ Safe null reference error (ignored):', e.message);
 			e.preventDefault();
@@ -1525,8 +1374,8 @@
 		}
 	});
 
-	// ✅ [추가] Promise rejection 핸들러
-	window.addEventListener('unhandledrejection', function(e) {
+	// ✅ Promise rejection 핸들러
+	window.addEventListener('unhandledrejection', (e) => {
 		if (e.reason && e.reason.message && e.reason.message.includes('Cannot read properties of null')) {
 			console.log('⚠️ Safe null reference in promise (ignored):', e.reason.message);
 			e.preventDefault();
@@ -1543,53 +1392,13 @@
 		}
 	}
 
-	function safePostMessage(targetWindow, message, targetOrigin) {
-		try {
-			// ✅ targetWindow 유효성 확인
-			if (!targetWindow || !targetWindow.postMessage) {
-				console.log('Invalid target window for postMessage');
-				return false;
-			}
-
-			// ✅ 같은 origin인지 확인
-			let actualTargetOrigin = targetOrigin;
-
-			try {
-				if (targetWindow.location && targetWindow.location.origin) {
-					if (targetWindow.location.origin === window.location.origin) {
-						actualTargetOrigin = targetOrigin;
-					} else {
-						// ✅ 다른 origin인 경우 cautious하게 처리
-						actualTargetOrigin = '*';
-						console.log('Different origin, using wildcard for postMessage');
-					}
-				}
-			} catch (securityError) {
-				// ✅ Cross-origin 접근 오류 (정상적인 경우)
-				actualTargetOrigin = '*';
-			}
-
-			// ✅ 메시지 전송
-			targetWindow.postMessage(message, actualTargetOrigin);
-			return true;
-
-		} catch (error) {
-			console.log('Post message error:', error);
-			return false;
-		}
-	}
-
 	function showCookieMessage(message, type) {
-		// 기존 showCookieMessage 함수 구현
 		console.log('Cookie message:', message, type);
 	}
 
 	//------------------------------------------------------------------------------------------------------->>> Tab 관리 (독립적인 초기화 시스템) START
-	// 초기화
-	// ✅ [수정] 초기화 함수 - 최소한의 설정만 수행
-	// main-content.js - initialize 함수 수정
+	// ✅ 초기화 함수 - 최소한의 설정만 수행
 	function initialize() {
-		// ✅ 이미 초기화되었으면 로그 출력하지 않음
 		if (isInitialized) {
 			return true;
 		}
@@ -1598,9 +1407,7 @@
 
 		try {
 			// ✅ 탭별 고유 설정
-			// ✅ 탭별 고유 설정 --------------------------------------------------------------------->>> TAB 관리 START
 			setupTabSpecificEnvironment();
-			// ✅ 탭별 고유 설정 --------------------------------------------------------------------->>> TAB 관리 END
 			setupMessageListeners();
 			loadOptions();
 			initializeMouseTracking();
@@ -1613,12 +1420,11 @@
 		}
 	}
 
-	// ✅ 탭별 고유 설정 --------------------------------------------------------------------->>> TAB 관리 START
+	// ✅ 탭별 고유 설정
 	/**
 	 * ✅ 탭별 독립 환경 설정
 	 */
 	function setupTabSpecificEnvironment() {
-		// ✅ 탭별 스토리지 키 설정
 		if (!window.webInspectorTabId) {
 			window.webInspectorTabId = `tab_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 		}
@@ -1626,7 +1432,6 @@
 		console.log(`🔧 Setting up environment for tab: ${window.webInspectorTabId}`);
 		
 		cleanupPotentialCrossTabResources();
-		// ✅ 기존 다른 탭의 리소스 정리 (안전 장치)
 		cleanupOtherTabResources();
 	}
 
@@ -1636,13 +1441,11 @@
 	function cleanupPotentialCrossTabResources() {
 		console.log('🧹 Cleaning up potential cross-tab resources...');
 		
-		// ✅ 현재 StateManager가 없으면 아직 탭 ID를 모르므로 건너뜀
 		if (!stateManager || !stateManager.tabId) {
 			console.log('⏭️ Skipping cross-tab cleanup - StateManager not ready');
 			return;
 		}
 		
-		// ✅ data-tab-id 속성이 있고 현재 탭 ID와 다른 요소 제거
 		const elementsWithTabId = document.querySelectorAll('[data-tab-id]');
 		elementsWithTabId.forEach(element => {
 			const elementTabId = element.getAttribute('data-tab-id');
@@ -1658,16 +1461,13 @@
 			}
 		});
 	}
-	// ✅ 탭별 고유 설정 --------------------------------------------------------------------->>> TAB 관리 END
 
-	// ✅ 탭별 고유 설정 --------------------------------------------------------------------->>> TAB 관리 END
 	/**
 	 * ✅ 다른 탭의 리소스 정리 (안전 장치)
 	 */
 	function cleanupOtherTabResources() {
 		console.log('🧹 Cleaning up potential cross-tab resources...');
 		
-		// ✅ 현재 탭의 ID와 일치하지 않는 리소스 제거
 		const inspectorElements = document.querySelectorAll('[id*="inspector"], [class*="inspector"]');
 		inspectorElements.forEach(element => {
 			if (!element.getAttribute('data-tab-id') || 
@@ -1681,21 +1481,17 @@
 			}
 		});
 	}
-	//------------------------------------------------------------------------------------------------------->>> Tab 관리 (독립적인 초기화 시스템) END
+	//------------------------------------------------------------------------------------------------------->>> Tab 관리 END
 
-	// ✅ [신규] 마우스 위치 추적 초기화 함수
+	// ✅ 마우스 위치 추적 초기화 함수
 	function initializeMouseTracking() {
 		console.log('🖱️ Initializing mouse position tracking...');
 		
-		// ✅ 초기 마우스 위치 설정 (화면 중앙)
-		lastMousePosition = {
-			clientX: window.innerWidth / 2,
-			clientY: window.innerHeight / 2,
-			lastUpdated: Date.now()
-		};
+		lastMousePosition.clientX = window.innerWidth / 2;
+		lastMousePosition.clientY = window.innerHeight / 2;
+		lastMousePosition.lastUpdated = Date.now();
 		
-		// ✅ 문서 클릭 시에도 마우스 위치 업데이트
-		document.addEventListener('click', function(e) {
+		document.addEventListener('click', (e) => {
 			if (stateManager && stateManager.isInspectorActive) {
 				lastMousePosition.clientX = e.clientX;
 				lastMousePosition.clientY = e.clientY;
@@ -1704,8 +1500,7 @@
 			}
 		}, true);
 
-		// ✅ 마우스 이동 시 위치 지속적으로 업데이트
-		document.addEventListener('mousemove', function(e) {
+		document.addEventListener('mousemove', (e) => {
 			lastMousePosition.clientX = e.clientX;
 			lastMousePosition.clientY = e.clientY;
 			lastMousePosition.lastUpdated = Date.now();
@@ -1716,14 +1511,9 @@
 
 	//------------------------------------------------------------------------------------------------------->>> TAB 관리 START
 
-	// ✅ [수정] 통합 config 업데이트 처리 - 컴포넌트 없이도 동작, 활성 모드 강제 동기화, Depth 동기화 강화
 	/**
 	 * ✅ handleConfigUpdate - 탭 ID 확인 강화 + ConfigManager 동기화
-	 * 
-	 * options.js가 ConfigManager 기반으로 변경되었으므로,
-	 * updateOptions 메시지가 오면 ConfigManager와 StateManager를 동시에 업데이트합니다.
 	 */
-	// main-content.js - handleConfigUpdate 완전 수정
 	function handleConfigUpdate(config) {
 		if (!config) {
 			console.log('❌ No config to process');
@@ -1732,33 +1522,25 @@
 
 		console.log('🎯 Processing config update in main content');
 
-		// ✅ [ConfigManager 연동] options.js에서 전송한 updateOptions 메시지를 받으면
-		// ConfigManager에도 업데이트하여 StateManager와의 일관성 유지
 		if (configManager && config.options) {
-			// ConfigManager.setMultiple()을 호출하여 설정 동기화
-			// options 객체의 모든 설정을 ConfigManager에 저장
 			configManager.setMultiple(config.options);
 			console.log('✅ [ConfigManager] 설정 동기화 완료 (options.js → ConfigManager)');
 		}
 
-		// ✅ 탭 ID 확인: 다른 탭의 config이면 즉시 무시
 		if (config.tabId) {
 			if (stateManager && config.tabId !== stateManager.tabId) {
 				console.log('⏭️ Ignoring config from different tab:', config.tabId, 'Current tab:', stateManager.tabId);
 				return;
 			}
 		} else {
-			// ✅ tabId가 없는 config (레거시)는 현재 탭에서만 처리
 			console.log('⚠️ Config without tabId (legacy), processing for current tab only');
 			
-			// ✅ 레거시 config에 현재 탭 ID 추가
 			if (stateManager && stateManager.tabId) {
 				config.tabId = stateManager.tabId;
 				console.log('✅ Added current tab ID to legacy config:', stateManager.tabId);
 			}
 		}
 
-		// ✅ 캐시에 저장 (StateManager가 있으면 탭별, 없으면 통합)
 		try {
 			if (stateManager && stateManager.tabId) {
 				localStorage.setItem(stateManager.localStorageKey, JSON.stringify(config));
@@ -1771,29 +1553,24 @@
 			console.error('❌ Config cache save error:', e);
 		}
 
-		// ✅ 컴포넌트가 이미 초기화되어 있으면 적용
 		if (isInitialized && stateManager) {
 			console.log('🎯 Applying config to initialized components');
 			
-			// ✅ 활성 모드 적용
 			if (config.activeModes && Array.isArray(config.activeModes)) {
 				stateManager.activeModes = new Set(config.activeModes);
 				console.log('✅ Active modes applied:', Array.from(stateManager.activeModes));
 			}
 			
-			// ✅ Depth 값 적용
 			if (config.currentDepthLevel !== undefined) {
 				stateManager.currentDepthLevel = config.currentDepthLevel;
 				console.log('✅ Depth level applied:', stateManager.currentDepthLevel);
 			}
 			
-			// ✅ 옵션 적용
 			if (config.options && Object.keys(config.options).length > 0) {
 				stateManager.updateOptions(config.options);
 				console.log('✅ Options applied');
 			}
 			
-			// ✅ UI 동기화
 			if (toggleManager) {
 				setTimeout(() => {
 					toggleManager.updateAllRulerButtonsFromState();
@@ -1802,7 +1579,6 @@
 				}, 100);
 			}
 			
-			// ✅ 측정값 업데이트
 			if (stateManager.selectedElement || stateManager.currentElement) {
 				setTimeout(() => {
 					if (elementAnalyzer && elementAnalyzer.updateMeasurements) {
@@ -1824,14 +1600,11 @@
 	function loadOptions() {
 		console.log('📥 Loading options for future use...');
 
-		// ✅ StateManager가 있으면 탭별 로드, 없으면 통합 로드
 		if (stateManager && stateManager.tabId) {
 			console.log(`🔄 Loading options for tab: ${stateManager.tabId}`);
-			// StateManager의 loadCachedOptions 사용
 		} else {
 			console.log('🔄 Loading unified options (StateManager not ready)');
-			// 기존 통합 로드 로직
-			chrome.storage.sync.get(null, function (savedOptions) {
+			chrome.storage.sync.get(null, (savedOptions) => {
 				if (chrome.runtime.lastError) {
 					console.error('Storage error:', chrome.runtime.lastError);
 					return;
@@ -1858,8 +1631,7 @@
 
 	console.log('🎉 Web Inspector Main Content Script loaded successfully!');
 
-
 })();
 
-// 상단에 window.WebInspector 정의(구현) 필요...
+// 상단에 window.WebInspector 정의
 window.WebInspector = window.webInspector;

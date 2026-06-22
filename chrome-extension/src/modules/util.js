@@ -1,4 +1,4 @@
-// download-manager.js
+// util.js
 class Util {
 
 	constructor(stateManager) {
@@ -8,9 +8,8 @@ class Util {
 			throw new Error('Util requires StateManager instance');
 		}
 
-		this.statemanager = stateManager; // ✅ 별도 변수에도 저장
+		this.statemanager = stateManager; // ✅ StateManager 참조
 		console.log('✅ Util initialized');
-
 	}
 
 	/**
@@ -18,18 +17,15 @@ class Util {
      */
     cleanup() {
         console.log('🧹 Util cleaning up...');
-        //this.stateManager = null;
         console.log('✅ Util cleaned up');
     }
 
     completeCleanup() {
-        //this.cleanup();
+        // Util은 별도 정리 불필요
     }
 	//---------------------------------------------------------------------------------------
-	
 
-	/*
-		// 모든 포맷 지원!
+	/* getContrastColor 사용 예:
 		this.getContrastColor('#ff0000');        // HEX
 		this.getContrastColor('#f00');           // 짧은 HEX  
 		this.getContrastColor('#ff000080');      // HEX with alpha
@@ -37,110 +33,59 @@ class Util {
 		this.getContrastColor('rgba(255,0,0,0.5)'); // RGBA
 		this.getContrastColor('hsl(0,100%,50%)'); // HSL
 		this.getContrastColor('red');            // 명명된 색상
-		this.getContrastColor('blue');           // 명명된 색상
 	*/
-	// element-analyzer.js - getContrastColor 함수 통합 버전
+	// [공용] 대비 색상 계산 =====================================>>>
+	/**
+	 * ✅ 모든 색상 포맷을 지원하는 contrast color 계산
+	 */
 	getContrastColor(color) {
-		// ✅ 모든 색상 포맷을 RGB 값으로 변환
 		const rgb = this.parseColorToRGB(color);
-
-		if (!rgb) {
-			return '#ffffff'; // 변환 실패 시 기본 흰색
-		}
-
-		// ✅ 밝기 계산 (YIQ 공식)
+		if (!rgb) return '#ffffff';
 		const brightness = ((rgb.r * 299) + (rgb.g * 587) + (rgb.b * 114)) / 1000;
-
-		// ✅ 밝기에 따른 폰트 색상 결정
 		return brightness > 128 ? '#000000' : '#ffffff';
 	}
 
-	// ✅ 추가: 모든 색상 포맷을 RGB로 변환하는 함수
+	// ✅ 모든 색상 포맷을 RGB로 변환
 	parseColorToRGB(color) {
 		if (!color) return null;
-
-		let r, g, b;
-
-		// 1. HEX 색상 (#RRGGBB, #RGB, #RRGGBBAA)
-		if (color.startsWith('#')) {
-			return this.hexToRGB(color);
-		}
-
-		// 2. RGB/RGBA 색상 (rgb(255,255,255), rgba(255,255,255,0.5))
-		if (color.startsWith('rgb')) {
-			return this.rgbToRGB(color);
-		}
-
-		// 3. HSL/HSLA 색상 (hsl(0,100%,50%), hsla(0,100%,50%,0.5))
-		if (color.startsWith('hsl')) {
-			return this.hslToRGB(color);
-		}
-
-		// 4. 명명된 색상 (red, blue, transparent 등)
-		if (this.isNamedColor(color)) {
-			return this.namedColorToRGB(color);
-		}
-
+		if (color.startsWith('#')) return this.hexToRGB(color);
+		if (color.startsWith('rgb')) return this.rgbStrToRGB(color);
+		if (color.startsWith('hsl')) return this.hslStrToRGB(color);
+		if (this.isNamedColor(color)) return this.namedColorToRGB(color);
 		return null;
 	}
 
 	// ✅ HEX → RGB 변환
 	hexToRGB(hex) {
-		let hexClean = hex.replace('#', '');
-
-		// #RGB → #RRGGBB 확장
-		if (hexClean.length === 3) {
-			hexClean = hexClean[0] + hexClean[0] + hexClean[1] + hexClean[1] + hexClean[2] + hexClean[2];
-		}
-
-		// 알파값 제거 (#RRGGBBAA → #RRGGBB)
-		if (hexClean.length === 8) {
-			hexClean = hexClean.substring(0, 6);
-		}
-
-		if (hexClean.length !== 6) {
-			return null;
-		}
-
-		const r = parseInt(hexClean.substr(0, 2), 16);
-		const g = parseInt(hexClean.substr(2, 2), 16);
-		const b = parseInt(hexClean.substr(4, 2), 16);
-
-		return { r, g, b };
+		let h = hex.replace('#', '');
+		if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+		if (h.length === 8) h = h.substring(0, 6);
+		if (h.length !== 6) return null;
+		return {
+			r: parseInt(h.substr(0, 2), 16),
+			g: parseInt(h.substr(2, 2), 16),
+			b: parseInt(h.substr(4, 2), 16)
+		};
 	}
 
-	// ✅ RGB/RGBA → RGB 변환
-	rgbToRGB(rgbString) {
-		const match = rgbString.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/i);
-		if (match) {
-			return {
-				r: parseInt(match[1]),
-				g: parseInt(match[2]),
-				b: parseInt(match[3])
-			};
-		}
-		return null;
+	// ✅ RGB/RGBA 문자열 → RGB 변환 (간소화)
+	rgbStrToRGB(str) {
+		const match = str.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/i);
+		return match ? { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]) } : null;
 	}
 
-	// ✅ HSL → RGB 변환
-	hslToRGB(hslString) {
-		const match = hslString.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%(?:,\s*[\d.]+)?\)/i);
-		if (match) {
-			const h = parseInt(match[1]) / 360;
-			const s = parseInt(match[2]) / 100;
-			const l = parseInt(match[3]) / 100;
-
-			return this.hslToRGBValues(h, s, l);
-		}
-		return null;
+	// ✅ HSL/HSLA 문자열 → RGB 변환 (간소화)
+	hslStrToRGB(str) {
+		const match = str.match(/hsla?\((\d+),\s*(\d+)%,\s*(\d+)%(?:,\s*[\d.]+)?\)/i);
+		if (!match) return null;
+		return this.hslToRGBValues(parseInt(match[1]) / 360, parseInt(match[2]) / 100, parseInt(match[3]) / 100);
 	}
 
 	// ✅ HSL 값을 RGB로 변환 (수학적 계산)
 	hslToRGBValues(h, s, l) {
 		let r, g, b;
-
 		if (s === 0) {
-			r = g = b = l; // 무채색
+			r = g = b = l;
 		} else {
 			const hue2rgb = (p, q, t) => {
 				if (t < 0) t += 1;
@@ -150,48 +95,47 @@ class Util {
 				if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
 				return p;
 			};
-
 			const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
 			const p = 2 * l - q;
 			r = hue2rgb(p, q, h + 1 / 3);
 			g = hue2rgb(p, q, h);
 			b = hue2rgb(p, q, h - 1 / 3);
 		}
-
-		return {
-			r: Math.round(r * 255),
-			g: Math.round(g * 255),
-			b: Math.round(b * 255)
-		};
+		return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
 	}
 
-	// ✅ 명명된 색상 → RGB 변환
+	// ✅ 명명된 색상 확인
 	isNamedColor(color) {
-		const namedColors = {
-			'black': '#000000', 'white': '#ffffff', 'red': '#ff0000',
-			'green': '#008000', 'blue': '#0000ff', 'yellow': '#ffff00',
-			'cyan': '#00ffff', 'magenta': '#ff00ff', 'silver': '#c0c0c0',
-			'gray': '#808080', 'maroon': '#800000', 'olive': '#808000',
-			'purple': '#800080', 'teal': '#008080', 'navy': '#000080',
-			'orange': '#ffa500', 'pink': '#ffc0cb', 'transparent': '#00000000'
-		};
-		return namedColors[color.toLowerCase()] !== undefined;
+		return this.getNamedColorRGBMap()[color.toLowerCase()] !== undefined;
 	}
 
+	// ✅ 명명된 색상 → RGB 값 변환
 	namedColorToRGB(colorName) {
-		const namedColors = {
-			'black': { r: 0, g: 0, b: 0 }, 'white': { r: 255, g: 255, b: 255 },
-			'red': { r: 255, g: 0, b: 0 }, 'green': { r: 0, g: 128, b: 0 },
-			'blue': { r: 0, g: 0, b: 255 }, 'yellow': { r: 255, g: 255, b: 0 },
-			'cyan': { r: 0, g: 255, b: 255 }, 'magenta': { r: 255, g: 0, b: 255 },
-			'silver': { r: 192, g: 192, b: 192 }, 'gray': { r: 128, g: 128, b: 128 },
-			'maroon': { r: 128, g: 0, b: 0 }, 'olive': { r: 128, g: 128, b: 0 },
-			'purple': { r: 128, g: 0, b: 128 }, 'teal': { r: 0, g: 128, b: 128 },
-			'navy': { r: 0, g: 0, b: 128 }, 'orange': { r: 255, g: 165, b: 0 },
-			'pink': { r: 255, g: 192, b: 203 }, 'transparent': { r: 0, g: 0, b: 0 }
-		};
+		return this.getNamedColorRGBMap()[colorName.toLowerCase()] || null;
+	}
 
-		return namedColors[colorName.toLowerCase()] || null;
+	// ✅ 명명된 색상 RGB 맵 반환
+	getNamedColorRGBMap() {
+		return {
+			'black': { r: 0, g: 0, b: 0 },
+			'white': { r: 255, g: 255, b: 255 },
+			'red': { r: 255, g: 0, b: 0 },
+			'green': { r: 0, g: 128, b: 0 },
+			'blue': { r: 0, g: 0, b: 255 },
+			'yellow': { r: 255, g: 255, b: 0 },
+			'cyan': { r: 0, g: 255, b: 255 },
+			'magenta': { r: 255, g: 0, b: 255 },
+			'silver': { r: 192, g: 192, b: 192 },
+			'gray': { r: 128, g: 128, b: 128 },
+			'maroon': { r: 128, g: 0, b: 0 },
+			'olive': { r: 128, g: 128, b: 0 },
+			'purple': { r: 128, g: 0, b: 128 },
+			'teal': { r: 0, g: 128, b: 128 },
+			'navy': { r: 0, g: 0, b: 128 },
+			'orange': { r: 255, g: 165, b: 0 },
+			'pink': { r: 255, g: 192, b: 203 },
+			'transparent': { r: 0, g: 0, b: 0 }
+		};
 	}
 
 	//---------------------------------------------------------------------------------------------------------
@@ -229,12 +173,91 @@ class Util {
     }
 
 
+	//=============================================================================================
+	// 안전한 스토리지/메시지 유틸리티 (main-content.js에서 이동)
+	//=============================================================================================
+
+	/**
+     * ✅ Chrome Storage에 안전하게 저장
+     * @param {Object} items - 저장할 데이터
+     * @param {Function} [callback] - 완료 콜백
+     */
+    safeStorageSet(items, callback) {
+        try {
+            if (typeof chrome === 'undefined' || !chrome.storage || !chrome.storage.sync) {
+                console.log('Chrome storage API not available');
+                if (callback) setTimeout(callback, 100);
+                return;
+            }
+
+            chrome.storage.sync.set(items, () => {
+                if (chrome.runtime.lastError) {
+                    console.log('Storage set error (non-critical):', chrome.runtime.lastError);
+                }
+                if (callback) callback();
+            });
+        } catch (error) {
+            console.log('Storage set exception (non-critical):', error);
+            if (callback) setTimeout(callback, 100);
+        }
+    }
+
+    /**
+     * ✅ 조정된 요소들의 원래 스타일 복원
+     */
+    restoreAdjustedElements() {
+        if (!this.statemanager) return;
+        this.statemanager.temporarilyAdjustedElements.forEach(item => {
+            if (item.element && item.element.style) {
+                item.element.style.setProperty('opacity', item.originalOpacity, 'important');
+                item.element.style.setProperty('pointer-events', item.originalPointerEvents, 'important');
+            }
+        });
+        this.statemanager.temporarilyAdjustedElements = [];
+    }
+
+    /**
+     * ✅ 안전한 postMessage 전송
+     * @param {Window} targetWindow - 메시지를 보낼 대상 window
+     * @param {*} message - 전송할 메시지
+     * @param {string} targetOrigin - 대상 origin
+     * @returns {boolean} 성공 여부
+     */
+    safePostMessage(targetWindow, message, targetOrigin) {
+        try {
+            if (!targetWindow || !targetWindow.postMessage) {
+                console.log('Invalid target window for postMessage');
+                return false;
+            }
+
+            let actualTargetOrigin = targetOrigin;
+
+            try {
+                if (targetWindow.location && targetWindow.location.origin) {
+                    if (targetWindow.location.origin === window.location.origin) {
+                        actualTargetOrigin = targetOrigin;
+                    } else {
+                        actualTargetOrigin = '*';
+                        console.log('Different origin, using wildcard for postMessage');
+                    }
+                }
+            } catch (securityError) {
+                actualTargetOrigin = '*';
+            }
+
+            targetWindow.postMessage(message, actualTargetOrigin);
+            return true;
+
+        } catch (error) {
+            console.log('Post message error:', error);
+            return false;
+        }
+    }
 
 	// 요소 정보 ====================================================================================>>> START
-	// ✅ [신규] Webflow 사이트 감지 함수 (간단한 버전)
+	// ✅ Webflow 사이트 감지 함수 (간단한 버전)
 	isWebflowSite() {
 		try {
-			// Webflow 특징 감지 (최소한의 검사)
 			return document.querySelector('[class*="w-"]') !== null || 
 				document.querySelector('meta[content*="Webflow"]') !== null;
 		} catch (error) {
@@ -242,7 +265,7 @@ class Util {
 		}
 	}
 
-	// ✅ [신규] 최적의 분석 요소 선택 함수
+	// ✅ 최적의 분석 요소 선택 함수
 	getOptimalElementForAnalysis(originalElement) {
 		if (!originalElement) return originalElement;
 		
@@ -251,7 +274,6 @@ class Util {
 			className: originalElement.className
 		});
 		
-		// 1. 컨테이너 요소인지 확인
 		if (this.isContainerElement(originalElement)) {
 			const contentElement = this.findContentElement(originalElement);
 			if (contentElement && contentElement !== originalElement) {
@@ -260,7 +282,6 @@ class Util {
 			}
 		}
 		
-		// 2. 텍스트만 있는 컨테이너인 경우 부모 요소 확인
 		if (this.isTextOnlyContainer(originalElement)) {
 			const parent = originalElement.parentElement;
 			if (parent && this.hasVisualStyles(parent)) {
@@ -272,7 +293,7 @@ class Util {
 		return originalElement;
 	}
 
-	// ✅ [신규] 컨테이너 요소 판별 (간단한 버전)
+	// ✅ 컨테이너 요소 판별 (간단한 버전)
 	isContainerElement(element) {
 		if (!element) return false;
 		
@@ -281,14 +302,14 @@ class Util {
 			element.classList.contains('wrapper'),
 			element.classList.contains('section'),
 			element.classList.contains('block'),
-			element.childElementCount > 2, // 여러 자식을 가진 경우
-			element.offsetWidth > 300 // 넓은 요소
+			element.childElementCount > 2,
+			element.offsetWidth > 300
 		];
 		
 		return containerIndicators.some(indicator => indicator);
 	}
 
-	// ✅ [신규] 텍스트만 있는 컨테이너 판별
+	// ✅ 텍스트만 있는 컨테이너 판별
 	isTextOnlyContainer(element) {
 		if (!element || !element.textContent) return false;
 		
@@ -297,7 +318,7 @@ class Util {
 			['DIV', 'SPAN', 'P'].includes(element.tagName);
 	}
 
-	// ✅ [신규] 시각적 스타일이 있는지 확인
+	// ✅ 시각적 스타일이 있는지 확인
 	hasVisualStyles(element) {
 		if (!element) return false;
 		
@@ -312,41 +333,35 @@ class Util {
 		}
 	}
 
-	// ✅ [신규] 콘텐츠 요소 찾기 (우선순위 기반)
+	// ✅ 콘텐츠 요소 찾기 (우선순위 기반)
 	findContentElement(container) {
 		if (!container) return container;
 		
-		// 우선순위 1: 이미지 요소
 		const imgElement = container.querySelector('img');
 		if (imgElement) return imgElement;
 		
-		// 우선순위 2: 상호작용 요소 (버튼, 링크)
 		const interactiveElement = container.querySelector('button, a, input');
 		if (interactiveElement) return interactiveElement;
 		
-		// 우선순위 3: 시각적 스타일이 있는 첫 번째 자식
 		for (let child of container.children) {
 			if (this.hasVisualStyles(child)) {
 				return child;
 			}
 		}
 		
-		// 우선순위 4: 첫 번째 자식 요소
 		return container.firstElementChild || container;
 	}
 
-	// ✅ [신규] Webflow 요소 판별 함수
+	// ✅ Webflow 요소 판별 함수
 	isWebflowElement(element) {
 		if (!element) return false;
 		
 		try {
-			// Webflow 클래스 패턴 감지
 			const hasWebflowClass = element.classList && 
 				Array.from(element.classList).some(className => 
 					className.startsWith('w-') || className.includes('_wf')
 				);
 			
-			// 주변 Webflow 요소 감지
 			const hasWebflowParent = element.closest('[class*="w-"]') !== null;
 			
 			return hasWebflowClass || hasWebflowParent;
