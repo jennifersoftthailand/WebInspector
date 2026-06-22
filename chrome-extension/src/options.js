@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	const resetButton = document.getElementById('reset-options');
 	const defaultDepthLevel = document.getElementById('defaultDepthLevel');
 	const defaultDepthLevelValue = document.getElementById('defaultDepthLevelValue');
+	// ✅ 섹션별 Reset 버튼 (data-section 속성으로 구분)
+	const sectionResetButtons = document.querySelectorAll('.btn-section-reset');
 
 	// ====================================================================
 	// 상태 변수
@@ -104,7 +106,13 @@ document.addEventListener('DOMContentLoaded', function () {
 			resetButton.addEventListener('click', resetOptions);
 		}
 
-		// 8. 초기화 완료 (이 시점부터 변경 이벤트 허용)
+		// 8. 섹션별 Reset 버튼 이벤트 등록
+		setupSectionResetButtons();
+
+		// 9. 색상 미리보기 초기화 (모든 color-preview 동기화)
+		updateAllColorPreviews();
+
+		// 10. 초기화 완료 (이 시점부터 변경 이벤트 허용)
 		isInitialized = true;
 
 		console.log('✅ [Options] 페이지 초기화 완료 (ConfigManager 기반)');
@@ -175,11 +183,24 @@ document.addEventListener('DOMContentLoaded', function () {
 	 * - 초기화 전에는 무시
 	 * - 변경된 요소의 id와 value를 로그로 출력
 	 * - saveOptions() 호출 (ConfigManager 저장 + 탭 알림)
+	 * - 컬러피커 변경 시 색상 미리보기 실시간 업데이트
 	 */
 	function handleOptionChange(event) {
 		if (!isInitialized) return;
 
-		console.log(`🔄 [Options] 옵션 변경: ${event.target.id} = ${event.target.value}`);
+		const targetId = event.target.id;
+		console.log(`🔄 [Options] 옵션 변경: ${targetId} = ${event.target.value}`);
+
+		// ✅ 컬러피커 변경 시 색상 미리보기 실시간 업데이트
+		if (event.target.type === 'color') {
+			// color ID에서 'Color' 접미사 추출하여 data-mode 값으로 변환
+			// 예: 'highlightColor' → 'highlight', 'elementColor' → 'element'
+			const preview = document.querySelector('.color-preview[data-mode="' + targetId.replace('Color', '') + '"]');
+			if (preview) {
+				preview.style.background = event.target.value;
+			}
+		}
+
 		saveOptions();
 	}
 
@@ -351,6 +372,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		applySliderOption('childrenBgOpacity', 'childrenBgOpacityValue', options.childrenBgOpacity, true);
 		applySliderOption('borderRadiusLineOpacity', 'borderRadiusLineOpacityValue', options.borderRadiusLineOpacity, true);
 
+		// 7. 색상 미리보기 동기화
+		updateAllColorPreviews();
+
 		console.log('✅ [Options] 설정 UI 적용 완료');
 	}
 
@@ -423,6 +447,168 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (element && value) {
 			element.value = value;
 		}
+	}
+
+	// ====================================================================
+	// 섹션별 Reset 버튼 설정
+	// ====================================================================
+
+	/**
+	 * setupSectionResetButtons - 각 options-section 하단의 "This section to defaults" 버튼 이벤트 등록
+	 * 
+	 * [data-section 매핑]
+	 * - depth: defaultDepthLevel 만 해당
+	 * - measurementMode: defaultMeasurementMode 만 해당
+	 * - modeColors: 색상 7종(viewport/element/margin/padding/children/size/borderRadius) + 두께/투명도
+	 * - display: highlightColor/selectedColor/crosshairColor/rulerColor + crosshairStyle/panelPosition
+	 * - units: rulerUnit/decimalPlaces/tooltipFontSize/formatHtml
+	 */
+	function setupSectionResetButtons() {
+		sectionResetButtons.forEach(button => {
+			button.removeEventListener('click', handleSectionReset);
+			button.addEventListener('click', handleSectionReset);
+		});
+		console.log('✅ [Options] 섹션별 Reset 버튼 설정 완료 (' + sectionResetButtons.length + '개)');
+	}
+
+	/**
+	 * handleSectionReset - 섹션별 Reset 버튼 클릭 핸들러
+	 * 
+	 * [동작]
+	 * 1. data-section 속성값 읽기
+	 * 2. 해당 섹션에 속한 설정 키 목록을 ConfigManager.DEFAULTS 기본값으로 리셋
+	 * 3. UI 요소 값 업데이트
+	 * 4. 저장 및 탭 알림
+	 */
+	function handleSectionReset(event) {
+		const section = event.target.getAttribute('data-section');
+		if (!section) return;
+
+		if (!confirm('Are you sure you want to reset this section to default values?')) return;
+
+		console.log('🔄 [Options] 섹션 초기화:', section);
+
+		/** @type {string[]} 해당 섹션의 설정 키 목록 */
+		let sectionKeys = [];
+
+		// data-section 값에 따른 키 매핑
+		switch (section) {
+			case 'depth':
+				sectionKeys = ['defaultDepthLevel'];
+				break;
+			case 'measurementMode':
+				sectionKeys = ['defaultMeasurementMode'];
+				break;
+			case 'modeColors':
+				sectionKeys = [
+					'viewportColor', 'elementColor', 'marginColor', 'paddingColor',
+					'childrenColor', 'sizeColor', 'borderRadiusColor',
+					'viewportLineThickness', 'elementLineThickness', 'marginLineThickness',
+					'paddingLineThickness', 'childrenLineThickness', 'sizeLineThickness',
+					'borderRadiusLineThickness',
+					'viewportLineOpacity', 'elementLineOpacity', 'marginLineOpacity',
+					'paddingLineOpacity', 'childrenLineOpacity', 'sizeLineOpacity',
+					'childrenBgOpacity', 'borderRadiusLineOpacity'
+				];
+				break;
+			case 'display':
+				sectionKeys = [
+					'highlightColor', 'selectedColor', 'crosshairColor', 'rulerColor',
+					'crosshairStyle', 'panelPosition'
+				];
+				break;
+			case 'units':
+				sectionKeys = [
+					'rulerUnit', 'decimalPlaces', 'tooltipFontSize', 'formatHtml'
+				];
+				break;
+			default:
+				console.warn('⚠️ [Options] 알 수 없는 섹션:', section);
+				return;
+		}
+
+		// ConfigManager 기본값에서 해당 섹션의 값만 추출하여 업데이트
+		const defaults = cm.DEFAULTS;
+		const updates = {};
+
+		sectionKeys.forEach(key => {
+			if (key in defaults) {
+				updates[key] = defaults[key];
+			}
+		});
+
+		if (Object.keys(updates).length === 0) {
+			console.warn('⚠️ [Options] 초기화할 설정이 없음:', section);
+			return;
+		}
+
+		// ConfigManager에 저장
+		cm.setMultiple(updates);
+
+		// currentOptions 업데이트
+		Object.assign(currentOptions, updates);
+
+		// UI에 반영
+		applyOptions(updates);
+
+		// 색상 미리보기 업데이트
+		updateAllColorPreviews();
+
+		// 레거시 캐시 저장
+		saveToLegacyCache(currentOptions);
+
+		showStatus('Section reset to defaults!', 'success');
+		notifyActiveTabs(currentOptions);
+
+		console.log('✅ [Options] 섹션 초기화 완료:', section, Object.keys(updates));
+	}
+
+	// ====================================================================
+	// 색상 미리보기 업데이트
+	// ====================================================================
+
+	/**
+	 * updateColorPreview - 특정 color-preview 요소를 해당 컬러피커 값으로 업데이트
+	 * 
+	 * @param {string} mode - data-mode 값 (element, viewport, margin 등)
+	 */
+	function updateColorPreview(mode) {
+		const preview = document.querySelector('.color-preview[data-mode="' + mode + '"]');
+		const colorInput = document.getElementById(mode + 'Color') || document.getElementById(mode);
+		if (preview && colorInput) {
+			preview.style.background = colorInput.value;
+		}
+	}
+
+	/**
+	 * updateAllColorPreviews - 모든 color-preview 요소를 현재 컬러피커 값으로 동기화
+	 * 
+	 * [호출 시점]
+	 * - 초기화 완료 후
+	 * - 섹션/전체 Reset 후
+	 * - 컬러피커 변경 시
+	 */
+	function updateAllColorPreviews() {
+		const previews = document.querySelectorAll('.color-preview');
+		previews.forEach(preview => {
+			const mode = preview.getAttribute('data-mode');
+			if (!mode) return;
+
+			// data-mode 값에 해당하는 컬러피커 요소 찾기
+			// modeColors: viewport/element/margin/padding/children/size/borderRadius
+			// display: highlight/selected/crosshair/ruler
+			const colorId = (mode === 'highlight' || mode === 'selected' || mode === 'crosshair' || mode === 'ruler')
+				? (mode === 'highlight' ? 'highlightColor' :
+				   mode === 'selected' ? 'selectedColor' :
+				   mode === 'crosshair' ? 'crosshairColor' :
+				   mode === 'ruler' ? 'rulerColor' : mode)
+				: mode + 'Color';
+
+			const colorInput = document.getElementById(colorId);
+			if (colorInput) {
+				preview.style.background = colorInput.value;
+			}
+		});
 	}
 
 	// ====================================================================
@@ -625,7 +811,10 @@ document.addEventListener('DOMContentLoaded', function () {
 		applyOptions(defaults);
 		currentOptions = defaults;
 
-		// 4. 레거시 캐시에도 저장 (하위 호환성)
+		// 4. 색상 미리보기 업데이트
+		updateAllColorPreviews();
+
+		// 5. 레거시 캐시에도 저장 (하위 호환성)
 		saveToLegacyCache(defaults);
 
 		console.log('✅ [Options] 기본값 적용 완료');

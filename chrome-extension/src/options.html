@@ -34,6 +34,8 @@
 						<li><strong>Level 4-5:</strong> Deeper nesting (use with caution on complex pages)</li>
 					</ul>
 				</div>
+				<!-- ✅ 그룹별 Reset 버튼 (Depth Control Settings 섹션) -->
+				<button class="btn-secondary btn-section-reset" data-section="depth">This section to defaults</button>
 			</div>
 
 			<div class="options-section">
@@ -65,6 +67,8 @@
 						<li><strong>Ctrl+Alt+E:</strong> Radius Only</li>
 					</ul>
 				</div>
+				<!-- ✅ 그룹별 Reset 버튼 (Measurement Mode Settings 섹션) -->
+				<button class="btn-secondary btn-section-reset" data-section="measurementMode">This section to defaults</button>
 			</div>
 
 			<div class="options-section">
@@ -77,7 +81,9 @@
 						<h3>Viewport Distance (Ctrl+Alt+A)</h3>
 						<div class="option-group">
 							<label for="viewportColor">Line Color:</label>
-							<input type="color" id="viewportColor" value="#6A0DAD">
+							<input type="color" id="viewportColor" value="#FFD60A">
+							<!-- ✅ 색상 미리보기 원 (컬러피커 변경 시 실시간 업데이트) -->
+							<div class="color-preview" data-mode="viewport" style="background:#FFD60A;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<!-- ✅ 중복된 viewportColor 제거 -->
 						<div class="option-group">
@@ -97,7 +103,9 @@
 						<h3>Element Distance (Ctrl+Alt+S)</h3>
 						<div class="option-group">
 							<label for="elementColor">Line Color:</label>
-							<input type="color" id="elementColor" value="#ff0095">
+							<input type="color" id="elementColor" value="#FF3B30">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="element" style="background:#FF3B30;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="elementLineThickness">Line Thickness:</label>
@@ -116,7 +124,9 @@
 						<h3>Margin (Ctrl+Alt+Z)</h3>
 						<div class="option-group">
 							<label for="marginColor">Line Color:</label>
-							<input type="color" id="marginColor" value="#FFD700">
+							<input type="color" id="marginColor" value="#FF9500">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="margin" style="background:#FF9500;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="marginLineThickness">Line Thickness:</label>
@@ -135,7 +145,9 @@
 						<h3>Padding (Ctrl+Alt+X)</h3>
 						<div class="option-group">
 							<label for="paddingColor">Line Color:</label>
-							<input type="color" id="paddingColor" value="#FF5252">
+							<input type="color" id="paddingColor" value="#34C759">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="padding" style="background:#34C759;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="paddingLineThickness">Line Thickness:</label>
@@ -154,7 +166,9 @@
 						<h3>Child Elements (Ctrl+Alt+W)</h3>
 						<div class="option-group">
 							<label for="childrenColor">Line Color:</label> <!-- ✅ childColor → childrenColor -->
-							<input type="color" id="childrenColor" value="#41433a"> <!-- ✅ ID 수정 -->
+							<input type="color" id="childrenColor" value="#5AC8FA"> <!-- ✅ Apple HIG 라이트 블루 -->
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="children" style="background:#5AC8FA;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="childrenLineThickness">Line Thickness:</label> <!-- ✅ ID 수정 -->
@@ -178,7 +192,9 @@
 						<h3>Size (Ctrl+Alt+D)</h3>
 						<div class="option-group">
 							<label for="sizeColor">Line Color:</label>
-							<input type="color" id="sizeColor" value="#ff0000">
+							<input type="color" id="sizeColor" value="#AF52DE">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="size" style="background:#AF52DE;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="sizeLineThickness">Line Thickness:</label>
@@ -197,7 +213,9 @@
 						<h3>Radius (Ctrl+Alt+R)</h3>
 						<div class="option-group">
 							<label for="borderRadiusColor">Radius Color:</label>
-							<input type="color" id="borderRadiusColor" value="#ff0000">
+							<input type="color" id="borderRadiusColor" value="#007AFF">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="borderRadius" style="background:#007AFF;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="borderRadiusLineThickness">Line Thickness:</label>
@@ -211,6 +229,8 @@
 						</div>
 					</div>
 				</div>
+				<!-- ✅ 그룹별 Reset 버튼 (Measurement Mode Colors & Styles 섹션) -->
+				<button class="btn-secondary btn-section-reset" data-section="modeColors">This section to defaults</button>
 			</div>
 
 			<!-- Display Settings 섹션을 2열로 변경 -->
@@ -221,18 +241,26 @@
 						<div class="option-group">
 							<label for="highlightColor">Highlight Color:</label>
 							<input type="color" id="highlightColor" value="#9fcbc0">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="highlight" style="background:#9fcbc0;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="selectedColor">Selected Element Color:</label>
-							<input type="color" id="selectedColor" value="#FF9800">
+							<input type="color" id="selectedColor" value="#A2845E">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="selected" style="background:#A2845E;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="crosshairColor">Crosshair Color:</label>
-							<input type="color" id="crosshairColor" value="#0F9D58">
+							<input type="color" id="crosshairColor" value="#8E8E93">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="crosshair" style="background:#8E8E93;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 						<div class="option-group">
 							<label for="rulerColor">rulerColor Color:</label>
-							<input type="color" id="rulerColor" value="#f8f9fa">
+							<input type="color" id="rulerColor" value="#FF2D55">
+							<!-- ✅ 색상 미리보기 원 -->
+							<div class="color-preview" data-mode="ruler" style="background:#FF2D55;width:12px;height:12px;border-radius:50%;display:inline-block;margin-left:8px;vertical-align:middle;"></div>
 						</div>
 					</div>
 					<div class="option-column">
@@ -254,6 +282,8 @@
 						</div>
 					</div>
 				</div>
+				<!-- ✅ 그룹별 Reset 버튼 (Display Settings 섹션) -->
+				<button class="btn-secondary btn-section-reset" data-section="display">This section to defaults</button>
 			</div>
 
 			<!-- Measurement Units 섹션을 2열로 변경 -->
@@ -298,6 +328,8 @@
 						</div>
 					</div>
 				</div>
+				<!-- ✅ 그룹별 Reset 버튼 (Measurement Units 섹션) -->
+				<button class="btn-secondary btn-section-reset" data-section="units">This section to defaults</button>
 			</div>
 
 			<div class="action-buttons">

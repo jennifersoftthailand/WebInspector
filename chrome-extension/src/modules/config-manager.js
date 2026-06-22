@@ -45,18 +45,18 @@ class ConfigManager {
 
             // --- Display Settings 섹션 ---
             highlightColor: '#9fcbc0',    // 하이라이트 색상 (요소 호버 시 테두리)
-            selectedColor: '#FF9800',     // 선택된 요소 색상
-            crosshairColor: '#0F9D58',    // 십자선 색상
-            rulerColor: '#f8f9fa',       // 눈금자 색상
+            selectedColor: '#A2845E',     // 선택된 요소 색상 (Apple HIG 골드)
+            crosshairColor: '#8E8E93',    // 십자선 색상 (Apple HIG 그레이)
+            rulerColor: '#FF2D55',       // 눈금자 색상 (Apple HIG 레드-오렌지)
 
             // --- Measurement Mode Colors 섹션 ---
-            viewportColor: '#6A0DAD',     // 뷰포트 거리 측정 색상
-            elementColor: '#ff0095',      // 요소 거리 측정 색상
-            marginColor: '#FFD700',       // 마진 측정 색상
-            paddingColor: '#FF5252',      // 패딩 측정 색상
-            childrenColor: '#41433a',     // 자식 요소 측정 색상
-            sizeColor: '#ff0000',         // 크기 측정 색상
-            borderRadiusColor: '#ff0000', // 모서리 radius 측정 색상
+            viewportColor: '#FFD60A',     // 뷰포트 거리 측정 색상 (Apple HIG 옐로우)
+            elementColor: '#FF3B30',      // 요소 거리 측정 색상 (Apple HIG 레드)
+            marginColor: '#FF9500',       // 마진 측정 색상 (Apple HIG 오렌지)
+            paddingColor: '#34C759',      // 패딩 측정 색상 (Apple HIG 그린)
+            childrenColor: '#5AC8FA',     // 자식 요소 측정 색상 (Apple HIG 라이트 블루)
+            sizeColor: '#AF52DE',         // 크기 측정 색상 (Apple HIG 퍼플)
+            borderRadiusColor: '#007AFF', // 모서리 radius 측정 색상 (Apple HIG 블루)
 
             // ----------------------------------------------------------------
 
