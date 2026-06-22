@@ -1,0 +1,130 @@
+{
+  "extensionName": {
+    "message": "Inspecteur d'éléments Web",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Analysez et inspectez les éléments de page Web avec des outils de mesure",
+    "description": "Extension description"
+  },
+  "toggleInspector": {
+    "message": "Basculer l'inspecteur Web",
+    "description": "Browser action title"
+  },
+  "elementInspector": {
+    "message": "Inspecteur d'éléments",
+    "description": "Panel title"
+  },
+  "basicInformation": {
+    "message": "Informations de base",
+    "description": "Basic information section title"
+  },
+  "dimensions": {
+    "message": "Dimensions",
+    "description": "Dimensions section title"
+  },
+  "marginsPadding": {
+    "message": "Marges et remplissage",
+    "description": "Margins and padding section title"
+  },
+  "typography": {
+    "message": "Typographie",
+    "description": "Typography section title"
+  },
+  "background": {
+    "message": "Arrière-plan",
+    "description": "Background section title"
+  },
+  "htmlCode": {
+    "message": "Code HTML",
+    "description": "HTML code section title"
+  },
+  "tag": {
+    "message": "Balise:",
+    "description": "Tag label"
+  },
+  "id": {
+    "message": "ID:",
+    "description": "ID label"
+  },
+  "classes": {
+    "message": "Classes:",
+    "description": "Classes label"
+  },
+  "type": {
+    "message": "Type:",
+    "description": "Type label"
+  },
+  "width": {
+    "message": "Largeur:",
+    "description": "Width label"
+  },
+  "height": {
+    "message": "Hauteur:",
+    "description": "Height label"
+  },
+  "position": {
+    "message": "Position:",
+    "description": "Position label"
+  },
+  "margin": {
+    "message": "Marge:",
+    "description": "Margin label"
+  },
+  "padding": {
+    "message": "Remplissage:",
+    "description": "Padding label"
+  },
+  "font": {
+    "message": "Police:",
+    "description": "Font label"
+  },
+  "size": {
+    "message": "Taille:",
+    "description": "Size label"
+  },
+  "color": {
+    "message": "Couleur:",
+    "description": "Color label"
+  },
+  "bgColor": {
+    "message": "Couleur:",
+    "description": "Background color label"
+  },
+  "bgImage": {
+    "message": "Image:",
+    "description": "Background image label"
+  },
+  "downloadHTML": {
+    "message": "Télécharger HTML",
+    "description": "Download HTML button text"
+  },
+  "noElementSelected": {
+    "message": "Aucun élément sélectionné",
+    "description": "No element selected message"
+  },
+  "measurementOn": {
+    "message": "Mesure: ACTIVÉ",
+    "description": "Measurement on state"
+  },
+  "measurementOff": {
+    "message": "Mesure: DÉSACTIVÉ",
+    "description": "Measurement off state"
+  },
+  "hidePanel": {
+    "message": "Masquer le panneau",
+    "description": "Hide panel button text"
+  },
+  "showPanel": {
+    "message": "Afficher le panneau",
+    "description": "Show panel button text"
+  },
+  "adSpace": {
+    "message": "Espace publicitaire",
+    "description": "Ad space placeholder text"
+  },
+  "adDescription": {
+    "message": "Le code AdSense serait ici",
+    "description": "Ad space description"
+  }
+}

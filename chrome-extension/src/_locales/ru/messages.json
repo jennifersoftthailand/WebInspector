@@ -1,0 +1,130 @@
+{
+  "extensionName": {
+    "message": "Инспектор веб-элементов",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Анализируйте и проверяйте элементы веб-страниц с помощью измерительных инструментов",
+    "description": "Extension description"
+  },
+  "toggleInspector": {
+    "message": "Переключить веб-инспектор",
+    "description": "Browser action title"
+  },
+  "elementInspector": {
+    "message": "Инспектор элементов",
+    "description": "Panel title"
+  },
+  "basicInformation": {
+    "message": "Основная информация",
+    "description": "Basic information section title"
+  },
+  "dimensions": {
+    "message": "Размеры",
+    "description": "Dimensions section title"
+  },
+  "marginsPadding": {
+    "message": "Отступы и поля",
+    "description": "Margins and padding section title"
+  },
+  "typography": {
+    "message": "Типографика",
+    "description": "Typography section title"
+  },
+  "background": {
+    "message": "Фон",
+    "description": "Background section title"
+  },
+  "htmlCode": {
+    "message": "HTML код",
+    "description": "HTML code section title"
+  },
+  "tag": {
+    "message": "Тег:",
+    "description": "Tag label"
+  },
+  "id": {
+    "message": "ID:",
+    "description": "ID label"
+  },
+  "classes": {
+    "message": "Классы:",
+    "description": "Classes label"
+  },
+  "type": {
+    "message": "Тип:",
+    "description": "Type label"
+  },
+  "width": {
+    "message": "Ширина:",
+    "description": "Width label"
+  },
+  "height": {
+    "message": "Высота:",
+    "description": "Height label"
+  },
+  "position": {
+    "message": "Позиция:",
+    "description": "Position label"
+  },
+  "margin": {
+    "message": "Отступ:",
+    "description": "Margin label"
+  },
+  "padding": {
+    "message": "Поле:",
+    "description": "Padding label"
+  },
+  "font": {
+    "message": "Шрифт:",
+    "description": "Font label"
+  },
+  "size": {
+    "message": "Размер:",
+    "description": "Size label"
+  },
+  "color": {
+    "message": "Цвет:",
+    "description": "Color label"
+  },
+  "bgColor": {
+    "message": "Цвет:",
+    "description": "Background color label"
+  },
+  "bgImage": {
+    "message": "Изображение:",
+    "description": "Background image label"
+  },
+  "downloadHTML": {
+    "message": "Скачать HTML",
+    "description": "Download HTML button text"
+  },
+  "noElementSelected": {
+    "message": "Элемент не выбран",
+    "description": "No element selected message"
+  },
+  "measurementOn": {
+    "message": "Измерение: ВКЛ",
+    "description": "Measurement on state"
+  },
+  "measurementOff": {
+    "message": "Измерение: ВЫКЛ",
+    "description": "Measurement off state"
+  },
+  "hidePanel": {
+    "message": "Скрыть панель",
+    "description": "Hide panel button text"
+  },
+  "showPanel": {
+    "message": "Показать панель",
+    "description": "Show panel button text"
+  },
+  "adSpace": {
+    "message": "Рекламное пространство",
+    "description": "Ad space placeholder text"
+  },
+  "adDescription": {
+    "message": "Код AdSense будет здесь",
+    "description": "Ad space description"
+  }
+}

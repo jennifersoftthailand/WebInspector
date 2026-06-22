@@ -1,0 +1,130 @@
+{
+  "extensionName": {
+    "message": "ตัวตรวจสอบองค์ประกอบเว็บ",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "วิเคราะห์และตรวจสอบองค์ประกอบหน้าเว็บด้วยเครื่องมือวัด",
+    "description": "Extension description"
+  },
+  "toggleInspector": {
+    "message": "สลับตัวตรวจสอบเว็บ",
+    "description": "Browser action title"
+  },
+  "elementInspector": {
+    "message": "ตัวตรวจสอบองค์ประกอบ",
+    "description": "Panel title"
+  },
+  "basicInformation": {
+    "message": "ข้อมูลพื้นฐาน",
+    "description": "Basic information section title"
+  },
+  "dimensions": {
+    "message": "ขนาด",
+    "description": "Dimensions section title"
+  },
+  "marginsPadding": {
+    "message": "ระยะขอบและช่องว่าง",
+    "description": "Margins and padding section title"
+  },
+  "typography": {
+    "message": "ตัวอักษร",
+    "description": "Typography section title"
+  },
+  "background": {
+    "message": "พื้นหลัง",
+    "description": "Background section title"
+  },
+  "htmlCode": {
+    "message": "โค้ด HTML",
+    "description": "HTML code section title"
+  },
+  "tag": {
+    "message": "แท็ก:",
+    "description": "Tag label"
+  },
+  "id": {
+    "message": "ID:",
+    "description": "ID label"
+  },
+  "classes": {
+    "message": "คลาส:",
+    "description": "Classes label"
+  },
+  "type": {
+    "message": "ประเภท:",
+    "description": "Type label"
+  },
+  "width": {
+    "message": "ความกว้าง:",
+    "description": "Width label"
+  },
+  "height": {
+    "message": "ความสูง:",
+    "description": "Height label"
+  },
+  "position": {
+    "message": "ตำแหน่ง:",
+    "description": "Position label"
+  },
+  "margin": {
+    "message": "ระยะขอบ:",
+    "description": "Margin label"
+  },
+  "padding": {
+    "message": "ช่องว่าง:",
+    "description": "Padding label"
+  },
+  "font": {
+    "message": "ฟอนต์:",
+    "description": "Font label"
+  },
+  "size": {
+    "message": "ขนาด:",
+    "description": "Size label"
+  },
+  "color": {
+    "message": "สี:",
+    "description": "Color label"
+  },
+  "bgColor": {
+    "message": "색상:",
+    "description": "Background color label"
+  },
+  "bgImage": {
+    "message": "ภาพ:",
+    "description": "Background image label"
+  },
+  "downloadHTML": {
+    "message": "ดาวน์โหลด HTML",
+    "description": "Download HTML button text"
+  },
+  "noElementSelected": {
+    "message": "ไม่ได้เลือกองค์ประกอบ",
+    "description": "No element selected message"
+  },
+  "measurementOn": {
+    "message": "การวัด: เปิด",
+    "description": "Measurement on state"
+  },
+  "measurementOff": {
+    "message": "การวัด: ปิด",
+    "description": "Measurement off state"
+  },
+  "hidePanel": {
+    "message": "ซ่อนแผง",
+    "description": "Hide panel button text"
+  },
+  "showPanel": {
+    "message": "แสดงแผง",
+    "description": "Show panel button text"
+  },
+  "adSpace": {
+    "message": "พื้นที่โฆษณา",
+    "description": "Ad space placeholder text"
+  },
+  "adDescription": {
+    "message": "โค้ด AdSense จะอยู่ที่นี่",
+    "description": "Ad space description"
+  }
+}

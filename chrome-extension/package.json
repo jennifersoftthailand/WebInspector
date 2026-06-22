@@ -1,0 +1,44 @@
+{
+	"name": "chrome-extension-with-obfuscation",
+	"version": "1.3.0",
+	"description": "Chrome Extension with Webpack, Obfuscator and Terser",
+	"scripts": {
+		"build": "webpack --mode=production",
+		"build-dev": "webpack --mode=development",
+		"dev": "webpack --mode=development --watch",
+		"clean": "rm -rf dist"
+	},
+	"keywords": [
+		"chrome-extension",
+		"webpack",
+		"obfuscator",
+		"terser"
+	],
+	"author": "Your Name",
+	"license": "MIT",
+	"devDependencies": {
+		"@babel/core": "^7.22.0",
+		"@babel/preset-env": "^7.22.0",
+		"babel-loader": "^9.1.0",
+		"core-js": "^3.32.0",
+		"copy-webpack-plugin": "^11.0.0",
+		"css-loader": "^6.8.0",
+		"html-webpack-plugin": "^5.5.0",
+		"javascript-obfuscator": "^4.0.0",
+		"mini-css-extract-plugin": "^2.7.0",
+		"terser-webpack-plugin": "^5.3.0",
+		"webpack": "^5.88.0",
+		"webpack-cli": "^5.1.0",
+		"webpack-manifest-plugin": "^5.0.0",
+		"webpack-obfuscator": "^3.5.0"
+	},
+	"browserslist": [
+		"last 2 Chrome versions",
+		"last 2 Firefox versions",
+		"last 2 Edge versions"
+	],
+	"engines": {
+		"node": ">=16.0.0",
+		"npm": ">=8.0.0"
+	}
+}

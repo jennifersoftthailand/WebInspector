@@ -1,0 +1,130 @@
+{
+  "extensionName": {
+    "message": "网页元素检查器",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "使用测量工具分析和检查网页元素",
+    "description": "Extension description"
+  },
+  "toggleInspector": {
+    "message": "切换网页检查器",
+    "description": "Browser action title"
+  },
+  "elementInspector": {
+    "message": "元素检查器",
+    "description": "Panel title"
+  },
+  "basicInformation": {
+    "message": "基本信息",
+    "description": "Basic information section title"
+  },
+  "dimensions": {
+    "message": "尺寸",
+    "description": "Dimensions section title"
+  },
+  "marginsPadding": {
+    "message": "边距与填充",
+    "description": "Margins and padding section title"
+  },
+  "typography": {
+    "message": "排版",
+    "description": "Typography section title"
+  },
+  "background": {
+    "message": "背景",
+    "description": "Background section title"
+  },
+  "htmlCode": {
+    "message": "HTML代码",
+    "description": "HTML code section title"
+  },
+  "tag": {
+    "message": "标签:",
+    "description": "Tag label"
+  },
+  "id": {
+    "message": "ID:",
+    "description": "ID label"
+  },
+  "classes": {
+    "message": "类:",
+    "description": "Classes label"
+  },
+  "type": {
+    "message": "类型:",
+    "description": "Type label"
+  },
+  "width": {
+    "message": "宽度:",
+    "description": "Width label"
+  },
+  "height": {
+    "message": "高度:",
+    "description": "Height label"
+  },
+  "position": {
+    "message": "位置:",
+    "description": "Position label"
+  },
+  "margin": {
+    "message": "边距:",
+    "description": "Margin label"
+  },
+  "padding": {
+    "message": "填充:",
+    "description": "Padding label"
+  },
+  "font": {
+    "message": "字体:",
+    "description": "Font label"
+  },
+  "size": {
+    "message": "大小:",
+    "description": "Size label"
+  },
+  "color": {
+    "message": "颜色:",
+    "description": "Color label"
+  },
+  "bgColor": {
+    "message": "颜色:",
+    "description": "Background color label"
+  },
+  "bgImage": {
+    "message": "图像:",
+    "description": "Background image label"
+  },
+  "downloadHTML": {
+    "message": "下载HTML",
+    "description": "Download HTML button text"
+  },
+  "noElementSelected": {
+    "message": "未选择元素",
+    "description": "No element selected message"
+  },
+  "measurementOn": {
+    "message": "测量: 开启",
+    "description": "Measurement on state"
+  },
+  "measurementOff": {
+    "message": "测量: 关闭",
+    "description": "Measurement off state"
+  },
+  "hidePanel": {
+    "message": "隐藏面板",
+    "description": "Hide panel button text"
+  },
+  "showPanel": {
+    "message": "显示面板",
+    "description": "Show panel button text"
+  },
+  "adSpace": {
+    "message": "广告空间",
+    "description": "Ad space placeholder text"
+  },
+  "adDescription": {
+    "message": "AdSense代码将显示在这里",
+    "description": "Ad space description"
+  }
+}

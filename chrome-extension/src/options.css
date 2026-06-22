@@ -1,0 +1,380 @@
+/* ✅ content.css 파일 최상단에 구글 폰트 import 추가 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap');
+
+/* 옵션 페이지 스타일 */
+/* ✅ 패널 전체 폰트 설정 */
+body {
+	margin: 0;
+	padding: 20px;
+	ont-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	background-color: #f8f9fa;
+	color: #333;
+}
+
+.options-container {
+	max-width: 800px;
+	margin: 0 auto;
+	background: white;
+	borderRadius: 10px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+header {
+	background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+	color: white;
+	padding: 20px;
+	text-align: center;
+}
+
+header h1 {
+	margin: 0;
+	font-size: 24px;
+	font-weight: 600;
+}
+
+main {
+	padding: 20px;
+}
+
+.options-section {
+	margin-bottom: 30px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #eee;
+}
+
+.options-section:last-child {
+	border-bottom: none;
+}
+
+.options-section h2 {
+	margin: 0 0 15px 0;
+	font-size: 18px;
+	color: #6a11cb;
+}
+
+.option-group {
+	display: flex;
+	align-items: center;
+	margin-bottom: 15px;
+}
+
+.option-group label {
+	width: 200px;
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.option-group input[type="color"] {
+	width: 40px;
+	height: 30px;
+	border: 1px solid #ddd;
+	borderRadius: 4px;
+	cursor: pointer;
+}
+
+.option-group input[type="range"] {
+	flex: 1;
+	margin: 0 10px;
+	height: 4px;
+	-webkit-appearance: none;
+	background: #e9ecef;
+	borderRadius: 2px;
+	outline: none;
+}
+
+.option-group input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 14px;
+	height: 14px;
+	borderRadius: 50%;
+	background: #6a11cb;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.option-group input[type="range"]::-webkit-slider-thumb:hover {
+	background: #2575fc;
+	transform: scale(1.2);
+}
+
+.option-group select {
+	padding: 8px;
+	border: 1px solid #ddd;
+	borderRadius: 4px;
+	font-size: 14px;
+	width: 200px;
+}
+
+.option-group input[type="checkbox"] {
+	width: 18px;
+	height: 18px;
+	margin: 0;
+}
+
+.checkbox-group {
+	display: flex;
+	align-items: center;
+}
+
+.checkbox-group label {
+	width: auto;
+	margin-left: 8px;
+	font-weight: normal;
+}
+
+.option-description {
+	background: #f8f9fa;
+	padding: 15px;
+	borderRadius: 5px;
+	margin-top: 10px;
+	border-left: 3px solid #6a11cb;
+}
+
+.option-description p {
+	margin: 0 0 10px 0;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+.option-description ul {
+	margin: 0;
+	padding-left: 20px;
+}
+
+.option-description li {
+	font-size: 12px;
+	margin-bottom: 5px;
+	line-height: 1.4;
+}
+
+.option-description strong {
+	color: #6a11cb;
+}
+
+.action-buttons {
+	display: flex;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+.btn-primary,
+.btn-secondary {
+	padding: 10px 20px;
+	border: none;
+	borderRadius: 5px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+	color: white;
+}
+
+.btn-secondary {
+	background: #f8f9fa;
+	color: #333;
+	border: 1px solid #ddd;
+}
+
+.btn-primary:hover {
+	opacity: 0.9;
+}
+
+.btn-secondary:hover {
+	background: #e9ecef;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+	.options-container {
+		margin: 10px;
+		borderRadius: 8px;
+	}
+
+	header {
+		padding: 15px;
+	}
+
+	main {
+		padding: 15px;
+	}
+
+	.option-group {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	.option-group label {
+		width: 100%;
+		margin-bottom: 5px;
+	}
+
+	.option-group input[type="range"] {
+		width: 100%;
+		margin: 5px 0;
+	}
+
+	.option-group select {
+		width: 100%;
+	}
+
+	.action-buttons {
+		flex-direction: column;
+	}
+
+	.btn-primary,
+	.btn-secondary {
+		width: 100%;
+	}
+}
+
+/* 색상 미리보기 스타일 */
+.color-preview {
+	width: 20px;
+	height: 20px;
+	borderRadius: 3px;
+	margin-left: 10px;
+	border: 1px solid #ddd;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+/* 섹션 토글 기능 */
+.section-header {
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.section-header::after {
+	content: '▼';
+	font-size: 12px;
+	transition: transform 0.3s ease;
+}
+
+.section-header.collapsed::after {
+	transform: rotate(-90deg);
+}
+
+.section-content {
+	overflow: hidden;
+	transition: max-height 0.3s ease;
+}
+
+.section-content.collapsed {
+	max-height: 0;
+}
+
+/* 모드 그리드 스타일 */
+.mode-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 20px;
+	margin-top: 15px;
+}
+
+.mode-item {
+	background: #f8f9fa;
+	padding: 15px;
+	borderRadius: 8px;
+	border-left: 4px solid #6a11cb;
+}
+
+.mode-item h3 {
+	margin: 0 0 12px 0;
+	font-size: 14px;
+	color: #6a11cb;
+}
+
+/* 툴팁 스타일 추가 */
+.mode-btn {
+	position: relative;
+}
+
+.mode-btn::before {
+	content: attr(title);
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 6px 10px;
+	background-color: var(--tooltip-bg-color, rgba(0, 0, 0, 0.9));
+	color: white;
+	font-size: 11px;
+	borderRadius: 4px;
+	white-space: nowrap;
+	opacity: 0;
+	visibility: hidden;
+	transition: all 0.2s ease;
+	pointer-events: none;
+	z-index: 1000;
+	font-weight: normal;
+	text-shadow: none;
+}
+
+.mode-btn:hover::before {
+	opacity: 1;
+	visibility: visible;
+	bottom: calc(100% + 8px);
+}
+
+/* 배경색 투명도 조정을 위한 CSS 변수 */
+.mode-btn[data-mode="default"] {
+	--tooltip-bg-color: #4285F4EE;
+}
+
+.mode-btn[data-mode="external"] {
+	--tooltip-bg-color: #8BC34AEE;
+}
+
+.mode-btn[data-mode="children"] {
+	--tooltip-bg-color: #9C27B0EE;
+}
+
+.mode-btn[data-mode="viewport"] {
+	--tooltip-bg-color: #6A0DADEE;
+}
+
+.mode-btn[data-mode="element"] {
+	--tooltip-bg-color: #FF6D00EE;
+}
+
+.mode-btn[data-mode="margin"] {
+	--tooltip-bg-color: #FF5252EE;
+}
+
+.mode-btn[data-mode="padding"] {
+	--tooltip-bg-color: #4285F4EE;
+}
+
+
+
+
+
+
+
+/* 옵션 섹션을 2열로 배치 */
+.option-grid-2col {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 20px;
+}
+
+.option-column {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	.option-grid-2col {
+		grid-template-columns: 1fr;
+	}
+}

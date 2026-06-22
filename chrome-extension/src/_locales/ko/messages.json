@@ -1,0 +1,130 @@
+{
+  "extensionName": {
+    "message": "웹 요소 검사기",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "측정 도구로 웹 페이지 요소 분석 및 검사",
+    "description": "Extension description"
+  },
+  "toggleInspector": {
+    "message": "웹 검사기 전환",
+    "description": "Browser action title"
+  },
+  "elementInspector": {
+    "message": "요소 검사기",
+    "description": "Panel title"
+  },
+  "basicInformation": {
+    "message": "기본 정보",
+    "description": "Basic information section title"
+  },
+  "dimensions": {
+    "message": "크기",
+    "description": "Dimensions section title"
+  },
+  "marginsPadding": {
+    "message": "마진 및 패딩",
+    "description": "Margins and padding section title"
+  },
+  "typography": {
+    "message": "글꼴",
+    "description": "Typography section title"
+  },
+  "background": {
+    "message": "배경",
+    "description": "Background section title"
+  },
+  "htmlCode": {
+    "message": "HTML 코드",
+    "description": "HTML code section title"
+  },
+  "tag": {
+    "message": "태그:",
+    "description": "Tag label"
+  },
+  "id": {
+    "message": "ID:",
+    "description": "ID label"
+  },
+  "classes": {
+    "message": "클래스:",
+    "description": "Classes label"
+  },
+  "type": {
+    "message": "유형:",
+    "description": "Type label"
+  },
+  "width": {
+    "message": "너비:",
+    "description": "Width label"
+  },
+  "height": {
+    "message": "높이:",
+    "description": "Height label"
+  },
+  "position": {
+    "message": "위치:",
+    "description": "Position label"
+  },
+  "margin": {
+    "message": "마진:",
+    "description": "Margin label"
+  },
+  "padding": {
+    "message": "패딩:",
+    "description": "Padding label"
+  },
+  "font": {
+    "message": "글꼴:",
+    "description": "Font label"
+  },
+  "size": {
+    "message": "크기:",
+    "description": "Size label"
+  },
+  "color": {
+    "message": "색상:",
+    "description": "Color label"
+  },
+  "bgColor": {
+    "message": "색상:",
+    "description": "Background color label"
+  },
+  "bgImage": {
+    "message": "이미지:",
+    "description": "Background image label"
+  },
+  "downloadHTML": {
+    "message": "HTML 다운로드",
+    "description": "Download HTML button text"
+  },
+  "noElementSelected": {
+    "message": "선택된 요소 없음",
+    "description": "No element selected message"
+  },
+  "measurementOn": {
+    "message": "측정: 켜짐",
+    "description": "Measurement on state"
+  },
+  "measurementOff": {
+    "message": "측정: 꺼짐",
+    "description": "Measurement off state"
+  },
+  "hidePanel": {
+    "message": "패널 숨기기",
+    "description": "Hide panel button text"
+  },
+  "showPanel": {
+    "message": "패널 표시",
+    "description": "Show panel button text"
+  },
+  "adSpace": {
+    "message": "광고 공간",
+    "description": "Ad space placeholder text"
+  },
+  "adDescription": {
+    "message": "AdSense 코드가 여기에 표시됩니다",
+    "description": "Ad space description"
+  }
+}

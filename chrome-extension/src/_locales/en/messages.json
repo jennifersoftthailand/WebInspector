@@ -1,0 +1,318 @@
+{
+  "extensionName": {
+    "message": "Web Inspector Pro",
+    "description": "Name of the extension"
+  },
+  "extensionDescription": {
+    "message": "Advanced web page inspection tool with measurement, element analysis, and HTML export features",
+    "description": "Description of the extension"
+  },
+  "toggleInspector": {
+    "message": "Toggle Web Inspector",
+    "description": "Tooltip for the browser action"
+  },
+  "toggleMeasurement": {
+    "message": "Toggle Measurement Mode",
+    "description": "Description for measurement toggle command"
+  },
+  "elementInspector": {
+    "message": "Element Inspector",
+    "description": "Title in the panel header"
+  },
+  "depthLevel": {
+    "message": "Depth",
+    "description": "Label for depth level control"
+  },
+  "basicInformation": {
+    "message": "Basic Information",
+    "description": "Section header for basic element info"
+  },
+  "dimensions": {
+    "message": "Dimensions",
+    "description": "Section header for dimension info"
+  },
+  "marginsPadding": {
+    "message": "Margins & Padding",
+    "description": "Section header for margin and padding info"
+  },
+  "typography": {
+    "message": "Typography",
+    "description": "Section header for typography info"
+  },
+  "background": {
+    "message": "Background",
+    "description": "Section header for background info"
+  },
+  "htmlCode": {
+    "message": "HTML Code",
+    "description": "Section header for HTML code"
+  },
+  "downloadHTML": {
+    "message": "Download HTML",
+    "description": "Button text for downloading HTML"
+  },
+  "tag": {
+    "message": "Tag",
+    "description": "Label for HTML tag"
+  },
+  "id": {
+    "message": "ID",
+    "description": "Label for element ID"
+  },
+  "classes": {
+    "message": "Classes",
+    "description": "Label for CSS classes"
+  },
+  "type": {
+    "message": "Type",
+    "description": "Label for element type"
+  },
+  "width": {
+    "message": "Width",
+    "description": "Label for width measurement"
+  },
+  "height": {
+    "message": "Height",
+    "description": "Label for height measurement"
+  },
+  "position": {
+    "message": "Position",
+    "description": "Label for position info"
+  },
+  "margin": {
+    "message": "Margin",
+    "description": "Label for margin info"
+  },
+  "padding": {
+    "message": "Padding",
+    "description": "Label for padding info"
+  },
+  "font": {
+    "message": "Font",
+    "description": "Label for font family"
+  },
+  "size": {
+    "message": "Size",
+    "description": "Label for font size"
+  },
+  "color": {
+    "message": "Color",
+    "description": "Label for text color"
+  },
+  "bgColor": {
+    "message": "Color",
+    "description": "Label for background color"
+  },
+  "bgImage": {
+    "message": "Image",
+    "description": "Label for background image"
+  },
+  "measurementActive": {
+    "message": "Measurement Mode: Active",
+    "description": "Status message for active measurement mode"
+  },
+  "measurementInactive": {
+    "message": "Measurement Mode: Inactive",
+    "description": "Status message for inactive measurement mode"
+  },
+  "downloadSuccess": {
+    "message": "HTML downloaded successfully!",
+    "description": "Success message for HTML download"
+  },
+  "downloadLimit": {
+    "message": "Download limit exceeded. Upgrade to premium for unlimited downloads.",
+    "description": "Message shown when download limit is reached"
+  },
+  "copySuccess": {
+    "message": "Copied to clipboard!",
+    "description": "Success message for copy operation"
+  },
+  "copyError": {
+    "message": "Failed to copy to clipboard",
+    "description": "Error message for copy operation"
+  },
+  "premiumTitle": {
+    "message": "Upgrade to Premium",
+    "description": "Title for premium upgrade dialog"
+  },
+  "premiumFeatures": {
+    "message": "Get unlimited HTML downloads and advanced features",
+    "description": "Description for premium features"
+  },
+  "shortcutHelp": {
+    "message": "Press M to toggle measurement mode, ESC to exit inspector",
+    "description": "Help text for keyboard shortcuts"
+  },
+  "elementSelected": {
+    "message": "Element selected",
+    "description": "Status message when element is selected"
+  },
+  "noElementSelected": {
+    "message": "No element selected",
+    "description": "Status message when no element is selected"
+  },
+  "measurementHint": {
+    "message": "Hold CTRL for element size only, CTRL+ALT for viewport distances",
+    "description": "Hint for measurement modes"
+  },
+  "crosshairActive": {
+    "message": "Crosshair: Active",
+    "description": "Status message for active crosshair"
+  },
+  "crosshairInactive": {
+    "message": "Crosshair: Inactive",
+    "description": "Status message for inactive crosshair"
+  },
+  "panelPositionLeft": {
+    "message": "Panel Position: Left",
+    "description": "Status message for left panel position"
+  },
+  "panelPositionRight": {
+    "message": "Panel Position: Right",
+    "description": "Status message for right panel position"
+  },
+  "depthLevel1": {
+    "message": "Current element only",
+    "description": "Description for depth level 1"
+  },
+  "depthLevel2": {
+    "message": "Current element + direct children",
+    "description": "Description for depth level 2"
+  },
+  "depthLevel3": {
+    "message": "Current element + children + grandchildren",
+    "description": "Description for depth level 3"
+  },
+  "depthLevel4": {
+    "message": "Deep nesting (complex pages)",
+    "description": "Description for depth level 4"
+  },
+  "depthLevel5": {
+    "message": "Maximum nesting (use with caution)",
+    "description": "Description for depth level 5"
+  },
+  "optionsSaved": {
+    "message": "Options saved successfully",
+    "description": "Success message for saving options"
+  },
+  "optionsReset": {
+    "message": "Options reset to defaults",
+    "description": "Success message for resetting options"
+  },
+  "enableFeature": {
+    "message": "Enable",
+    "description": "Label for enable checkbox"
+  },
+  "disableFeature": {
+    "message": "Disable",
+    "description": "Label for disable checkbox"
+  },
+  "viewDocumentation": {
+    "message": "View Documentation",
+    "description": "Link text for documentation"
+  },
+  "reportIssue": {
+    "message": "Report Issue",
+    "description": "Link text for issue reporting"
+  },
+  "rateExtension": {
+    "message": "Rate Extension",
+    "description": "Link text for rating extension"
+  },
+  "premiumBenefits": {
+    "message": "Premium Benefits:",
+    "description": "Header for premium benefits list"
+  },
+  "unlimitedDownloads": {
+    "message": "Unlimited HTML downloads",
+    "description": "Premium benefit: unlimited downloads"
+  },
+  "noAds": {
+    "message": "No advertisements",
+    "description": "Premium benefit: no ads"
+  },
+  "prioritySupport": {
+    "message": "Priority support",
+    "description": "Premium benefit: priority support"
+  },
+  "advancedFeatures": {
+    "message": "Advanced features",
+    "description": "Premium benefit: advanced features"
+  },
+  "currentUsage": {
+    "message": "Current usage: $1/$2 downloads",
+    "description": "Current usage statistics",
+    "placeholders": {
+      "1": {
+        "content": "$1"
+      },
+      "2": {
+        "content": "$2"
+      }
+    }
+  },
+  "freeTier": {
+    "message": "Free Tier (5 downloads per day)",
+    "description": "Label for free tier"
+  },
+  "premiumTier": {
+    "message": "Premium Tier (Unlimited downloads)",
+    "description": "Label for premium tier"
+  },
+  "upgradeNow": {
+    "message": "Upgrade Now",
+    "description": "Button text for upgrading to premium"
+  },
+  "learnMore": {
+    "message": "Learn More",
+    "description": "Button text for learning more"
+  },
+  "dismiss": {
+    "message": "Dismiss",
+    "description": "Button text for dismissing messages"
+  },
+  "ok": {
+    "message": "OK",
+    "description": "Button text for confirmation"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Button text for cancellation"
+  },
+  "yes": {
+    "message": "Yes",
+    "description": "Button text for affirmative response"
+  },
+  "no": {
+    "message": "No",
+    "description": "Button text for negative response"
+  },
+  "loading": {
+    "message": "Loading...",
+    "description": "Loading indicator text"
+  },
+  "saving": {
+    "message": "Saving...",
+    "description": "Saving indicator text"
+  },
+  "processing": {
+    "message": "Processing...",
+    "description": "Processing indicator text"
+  },
+  "error": {
+    "message": "Error",
+    "description": "Error message header"
+  },
+  "success": {
+    "message": "Success",
+    "description": "Success message header"
+  },
+  "warning": {
+    "message": "Warning",
+    "description": "Warning message header"
+  },
+  "info": {
+    "message": "Information",
+    "description": "Information message header"
+  }
+}

@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<!-- ✅ 구글 폰트 추가 -->
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="options.css">
+</head>
+
+<body>
+	<div class="options-container">
+		<header>
+			<h1>Web Inspector Options</h1>
+		</header>
+		<main>
+			<div class="options-section">
+				<h2>Depth Control Settings</h2>
+
+				<div class="option-group">
+					<label for="defaultDepthLevel">Default Depth Level:</label>
+					<input type="range" id="defaultDepthLevel" min="1" max="5" step="1" value="2">
+					<span id="defaultDepthLevelValue">2</span>
+				</div>
+
+				<div class="option-description">
+					<p>Set the default depth level for element inspection. Higher values will show more nested elements
+						but may impact performance.</p>
+					<ul>
+						<li><strong>Level 1:</strong> Current element only</li>
+						<li><strong>Level 2:</strong> Current element + direct children</li>
+						<li><strong>Level 3:</strong> Current element + children + grandchildren</li>
+						<li><strong>Level 4-5:</strong> Deeper nesting (use with caution on complex pages)</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="options-section">
+				<h2>Measurement Mode Settings</h2>
+
+				<div class="option-group">
+					<label for="defaultMeasurementMode">Default Measurement Mode:</label>
+					<select id="defaultMeasurementMode">
+						<option value="element" selected>Element Mode</option>
+						<option value="viewport">Viewport Distance</option>
+						<option value="margin">Margin Only</option>
+						<option value="padding">Padding Only</option>
+						<option value="children">Child Elements</option>
+						<option value="size">Size Only</option>
+						<option value="radius">Radius</option>
+					</select>
+				</div>
+
+				<div class="option-description">
+					<p>Set the default measurement mode when the inspector is activated.</p>
+					<p><strong>Keyboard Shortcuts:</strong></p>
+					<ul>
+						<li><strong>Ctrl+Alt+A:</strong> Viewport Distance</li>
+						<li><strong>Ctrl+Alt+S:</strong> Element Distance</li>
+						<li><strong>Ctrl+Alt+Z:</strong> Margin Only</li>
+						<li><strong>Ctrl+Alt+X:</strong> Padding Only</li>
+						<li><strong>Ctrl+Alt+W:</strong> Child Elements</li>
+						<li><strong>Ctrl+Alt+D:</strong> Size Only</li>
+						<li><strong>Ctrl+Alt+E:</strong> Radius Only</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="options-section">
+				<h2>Measurement Mode Colors & Styles</h2>
+
+				<div class="mode-grid">
+
+					<!-- Viewport Distance - 중복 제거 -->
+					<div class="mode-item">
+						<h3>Viewport Distance (Ctrl+Alt+A)</h3>
+						<div class="option-group">
+							<label for="viewportColor">Line Color:</label>
+							<input type="color" id="viewportColor" value="#6A0DAD">
+						</div>
+						<!-- ✅ 중복된 viewportColor 제거 -->
+						<div class="option-group">
+							<label for="viewportLineThickness">Line Thickness:</label>
+							<input type="range" id="viewportLineThickness" min="0.5" max="5" step="0.5" value="1">
+							<span id="viewportLineThicknessValue">1px</span>
+						</div>
+						<div class="option-group">
+							<label for="viewportLineOpacity">Line Opacity:</label>
+							<input type="range" id="viewportLineOpacity" min="0.1" max="1" step="0.1" value="0.8">
+							<span id="viewportLineOpacityValue">80%</span>
+						</div>
+					</div>
+
+					<!-- Element Distance -->
+					<div class="mode-item">
+						<h3>Element Distance (Ctrl+Alt+S)</h3>
+						<div class="option-group">
+							<label for="elementColor">Line Color:</label>
+							<input type="color" id="elementColor" value="#ff0095">
+						</div>
+						<div class="option-group">
+							<label for="elementLineThickness">Line Thickness:</label>
+							<input type="range" id="elementLineThickness" min="0.5" max="5" step="0.5" value="1">
+							<span id="elementLineThicknessValue">1px</span>
+						</div>
+						<div class="option-group">
+							<label for="elementLineOpacity">Line Opacity:</label>
+							<input type="range" id="elementLineOpacity" min="0.1" max="1" step="0.1" value="0.8">
+							<span id="elementLineOpacityValue">80%</span>
+						</div>
+					</div>
+
+					<!-- Margin -->
+					<div class="mode-item">
+						<h3>Margin (Ctrl+Alt+Z)</h3>
+						<div class="option-group">
+							<label for="marginColor">Line Color:</label>
+							<input type="color" id="marginColor" value="#FFD700">
+						</div>
+						<div class="option-group">
+							<label for="marginLineThickness">Line Thickness:</label>
+							<input type="range" id="marginLineThickness" min="0.1" max="2" step="0.1" value="0.5">
+							<span id="marginLineThicknessValue">0.5px</span>
+						</div>
+						<div class="option-group">
+							<label for="marginLineOpacity">Line Opacity:</label>
+							<input type="range" id="marginLineOpacity" min="0.1" max="1" step="0.1" value="0.7">
+							<span id="marginLineOpacityValue">70%</span>
+						</div>
+					</div>
+
+					<!-- Padding -->
+					<div class="mode-item">
+						<h3>Padding (Ctrl+Alt+X)</h3>
+						<div class="option-group">
+							<label for="paddingColor">Line Color:</label>
+							<input type="color" id="paddingColor" value="#FF5252">
+						</div>
+						<div class="option-group">
+							<label for="paddingLineThickness">Line Thickness:</label>
+							<input type="range" id="paddingLineThickness" min="0.1" max="2" step="0.1" value="0.5">
+							<span id="paddingLineThicknessValue">0.5px</span>
+						</div>
+						<div class="option-group">
+							<label for="paddingLineOpacity">Line Opacity:</label>
+							<input type="range" id="paddingLineOpacity" min="0.1" max="1" step="0.1" value="0.7">
+							<span id="paddingLineOpacityValue">70%</span>
+						</div>
+					</div>
+
+					<!-- Child Elements - ✅ childrenColor로 수정 -->
+					<div class="mode-item">
+						<h3>Child Elements (Ctrl+Alt+W)</h3>
+						<div class="option-group">
+							<label for="childrenColor">Line Color:</label> <!-- ✅ childColor → childrenColor -->
+							<input type="color" id="childrenColor" value="#41433a"> <!-- ✅ ID 수정 -->
+						</div>
+						<div class="option-group">
+							<label for="childrenLineThickness">Line Thickness:</label> <!-- ✅ ID 수정 -->
+							<input type="range" id="childrenLineThickness" min="0.5" max="5" step="0.5" value="1">
+							<span id="childrenLineThicknessValue">1px</span> <!-- ✅ ID 수정 -->
+						</div>
+						<div class="option-group">
+							<label for="childrenLineOpacity">Line Opacity:</label> <!-- ✅ ID 수정 -->
+							<input type="range" id="childrenLineOpacity" min="0.1" max="1" step="0.1" value="0.8">
+							<span id="childrenLineOpacityValue">80%</span> <!-- ✅ ID 수정 -->
+						</div>
+						<div class="option-group">
+							<label for="childrenBgOpacity">Background Opacity:</label> <!-- ✅ ID 수정 -->
+							<input type="range" id="childrenBgOpacity" min="0.1" max="1" step="0.1" value="0.2">
+							<span id="childrenBgOpacityValue">20%</span> <!-- ✅ ID 수정 -->
+						</div>
+					</div>
+
+					<!-- Size -->
+					<div class="mode-item">
+						<h3>Size (Ctrl+Alt+D)</h3>
+						<div class="option-group">
+							<label for="sizeColor">Line Color:</label>
+							<input type="color" id="sizeColor" value="#ff0000">
+						</div>
+						<div class="option-group">
+							<label for="sizeLineThickness">Line Thickness:</label>
+							<input type="range" id="sizeLineThickness" min="0.5" max="5" step="0.5" value="2">
+							<span id="sizeLineThicknessValue">2px</span>
+						</div>
+						<div class="option-group">
+							<label for="sizeLineOpacity">Line Opacity:</label>
+							<input type="range" id="sizeLineOpacity" min="0.1" max="1" step="0.1" value="0.8">
+							<span id="sizeLineOpacityValue">80%</span>
+						</div>
+					</div>
+
+					<!-- Radius -->
+					<div class="mode-item">
+						<h3>Radius (Ctrl+Alt+R)</h3>
+						<div class="option-group">
+							<label for="borderRadiusColor">Radius Color:</label>
+							<input type="color" id="borderRadiusColor" value="#ff0000">
+						</div>
+						<div class="option-group">
+							<label for="borderRadiusLineThickness">Line Thickness:</label>
+							<input type="range" id="borderRadiusLineThickness" min="0.5" max="5" step="0.5" value="2">
+							<span id="borderRadiusLineThicknessValue">2px</span>
+						</div>
+						<div class="option-group">
+							<label for="borderRadiusLineOpacity">Line Opacity:</label>
+							<input type="range" id="borderRadiusLineOpacity" min="0.1" max="1" step="0.1" value="0.8">
+							<span id="borderRadiusLineOpacityValue">80%</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Display Settings 섹션을 2열로 변경 -->
+			<div class="options-section">
+				<h2>Display Settings</h2>
+				<div class="option-grid-2col">
+					<div class="option-column">
+						<div class="option-group">
+							<label for="highlightColor">Highlight Color:</label>
+							<input type="color" id="highlightColor" value="#9fcbc0">
+						</div>
+						<div class="option-group">
+							<label for="selectedColor">Selected Element Color:</label>
+							<input type="color" id="selectedColor" value="#FF9800">
+						</div>
+						<div class="option-group">
+							<label for="crosshairColor">Crosshair Color:</label>
+							<input type="color" id="crosshairColor" value="#0F9D58">
+						</div>
+						<div class="option-group">
+							<label for="rulerColor">rulerColor Color:</label>
+							<input type="color" id="rulerColor" value="#f8f9fa">
+						</div>
+					</div>
+					<div class="option-column">
+						<div class="option-group">
+							<label for="crosshairStyle">Crosshair Style:</label>
+							<select id="crosshairStyle">
+								<option value="full">Full crosshair lines</option>
+								<option value="partial" selected>Partial crosshair (ruler markers)</option>
+								<option value="marking">Marking crosshair (around cursor)</option>
+								<option value="none">No crosshair</option>
+							</select>
+						</div>
+						<div class="option-group">
+							<label for="panelPosition">Panel Position:</label>
+							<select id="panelPosition">
+								<option value="right" selected>Right Side</option>
+								<option value="left">Left Side</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Measurement Units 섹션을 2열로 변경 -->
+			<div class="options-section">
+				<h2>Measurement Units</h2>
+				<div class="option-grid-2col">
+					<div class="option-column">
+						<div class="option-group">
+							<label for="rulerUnit">Measurement Unit:</label>
+							<select id="rulerUnit">
+								<option value="px" selected>Pixels (px)</option>
+								<option value="cm">Centimeters (cm)</option>
+								<option value="mm">Millimeters (mm)</option>
+								<option value="in">Inches (in)</option>
+							</select>
+						</div>
+						<div class="option-group">
+							<label for="decimalPlaces">Decimal Places:</label>
+							<select id="decimalPlaces">
+								<option value="0" selected>No decimals (e.g., 10px)</option>
+								<option value="1">1 decimal (e.g., 10.5px)</option>
+								<option value="2">2 decimals (e.g., 10.52px)</option>
+							</select>
+						</div>
+					</div>
+					<div class="option-column">
+						<div class="option-group">
+							<label for="tooltipFontSize">Tooltip Font Size:</label>
+							<select id="tooltipFontSize">
+								<option value="10px" selected>10px (Normal)</option>
+								<option value="11px">11px</option>
+								<option value="12px">12px</option>
+								<option value="9px">9px (Small)</option>
+								<option value="8px">8px (Very Small)</option>
+							</select>
+						</div>
+						<div class="option-item">
+							<label>
+								<input type="checkbox" id="formatHtml" checked>
+								Format HTML output (beautify)
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="action-buttons">
+				<!--<button id="save-options" class="btn-primary">Save Settings</button>-->
+				<button id="reset-options" class="btn-secondary">Reset to Defaults</button>
+			</div>
+		</main>
+	</div>
+
+	<script src="modules/config-manager.js"></script>
+	<script src="options.js"></script>
+</body>
+
+</html>

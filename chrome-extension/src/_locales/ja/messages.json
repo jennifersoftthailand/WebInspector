@@ -1,0 +1,130 @@
+{
+  "extensionName": {
+    "message": "ウェブ要素インスペクター",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "測定ツールでウェブページ要素を分析および検査",
+    "description": "Extension description"
+  },
+  "toggleInspector": {
+    "message": "ウェブインスペクターを切り替え",
+    "description": "Browser action title"
+  },
+  "elementInspector": {
+    "message": "要素インスペクター",
+    "description": "Panel title"
+  },
+  "basicInformation": {
+    "message": "基本情報",
+    "description": "Basic information section title"
+  },
+  "dimensions": {
+    "message": "寸法",
+    "description": "Dimensions section title"
+  },
+  "marginsPadding": {
+    "message": "マージンとパディング",
+    "description": "Margins and padding section title"
+  },
+  "typography": {
+    "message": "タイポグラフィ",
+    "description": "Typography section title"
+  },
+  "background": {
+    "message": "背景",
+    "description": "Background section title"
+  },
+  "htmlCode": {
+    "message": "HTMLコード",
+    "description": "HTML code section title"
+  },
+  "tag": {
+    "message": "タグ:",
+    "description": "Tag label"
+  },
+  "id": {
+    "message": "ID:",
+    "description": "ID label"
+  },
+  "classes": {
+    "message": "クラス:",
+    "description": "Classes label"
+  },
+  "type": {
+    "message": "タイプ:",
+    "description": "Type label"
+  },
+  "width": {
+    "message": "幅:",
+    "description": "Width label"
+  },
+  "height": {
+    "message": "高さ:",
+    "description": "Height label"
+  },
+  "position": {
+    "message": "位置:",
+    "description": "Position label"
+  },
+  "margin": {
+    "message": "マージン:",
+    "description": "Margin label"
+  },
+  "padding": {
+    "message": "パディング:",
+    "description": "Padding label"
+  },
+  "font": {
+    "message": "フォント:",
+    "description": "Font label"
+  },
+  "size": {
+    "message": "サイズ:",
+    "description": "Size label"
+  },
+  "color": {
+    "message": "色:",
+    "description": "Color label"
+  },
+  "bgColor": {
+    "message": "色:",
+    "description": "Background color label"
+  },
+  "bgImage": {
+    "message": "画像:",
+    "description": "Background image label"
+  },
+  "downloadHTML": {
+    "message": "HTMLをダウンロード",
+    "description": "Download HTML button text"
+  },
+  "noElementSelected": {
+    "message": "要素が選択されていません",
+    "description": "No element selected message"
+  },
+  "measurementOn": {
+    "message": "測定: オン",
+    "description": "Measurement on state"
+  },
+  "measurementOff": {
+    "message": "測定: オフ",
+    "description": "Measurement off state"
+  },
+  "hidePanel": {
+    "message": "パネルを非表示",
+    "description": "Hide panel button text"
+  },
+  "showPanel": {
+    "message": "パネルを表示",
+    "description": "Show panel button text"
+  },
+  "adSpace": {
+    "message": "広告スペース",
+    "description": "Ad space placeholder text"
+  },
+  "adDescription": {
+    "message": "AdSenseコードはここに表示されます",
+    "description": "Ad space description"
+  }
+}

@@ -1,0 +1,234 @@
+/* ✅ content.css 파일 최상단에 구글 폰트 import 추가 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap');
+
+/* ✅ 전체 폰트 시스템 통일 */
+.measurement-text,
+.size-text,
+.margin-value-text,
+.padding-value-text,
+.cookie-message,
+.premium-popup,
+.radius-value-text {
+	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+	/*font-weight: 400 !important;*/
+	/* ✅ Medium weight로 시인성 향상 */
+	/*font-size: 9px;*/
+}
+
+/* ✅ 숫자/코드용 모노스페이스 폰트 */
+.size-text,
+.margin-value-text,
+.padding-value-text,
+.radius-value-text {
+	font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+	/*font-weight: 400 !important;*/
+	/*letter-spacing: -0.02em !important; /* ✅ 자간 약간 축소 */
+	/*font-size: 9px;*/
+}
+
+
+
+/*---------------------------------------------------------*/
+
+/* ✅ 추가: IFrame/광고 선택 특별 스타일 */
+
+/**************************************/
+/* ✅ 추가: iframe 오버레이 강조 스타일 및 클릭 방지 */
+/* ✅ 수정: iframe 오버레이 - 시각적 표시 제거 (클릭 방지만 유지) */
+/* ✅ 수정: iframe 오버레이 - 붉은색 빗살무늬 패턴 */
+/* ✅ iframe-overlay와 svg-overlay 클래스를 동시에 정의 */
+/*
+.iframe-overlay, .svg-overlay {
+    position: absolute;
+    z-index: 2147483639;
+    background-image: 
+        linear-gradient(45deg, rgba(255, 0, 0, 0.2) 25%, transparent 25%, transparent 50%, 
+        rgba(255, 0, 0, 0.2) 50%, rgba(255, 0, 0, 0.2) 75%, transparent 75%, transparent) !important;
+    background-size: 10px 10px !important;
+    border: none !important;
+    pointer-events: auto !important;
+    cursor: default !important;
+}
+*/
+/* ✅ SVG 오버레이만 파란색으로 구분 
+.svg-overlay {
+    background-image: 
+        linear-gradient(45deg, rgba(0, 100, 255, 0.2) 25%, transparent 25%, transparent 50%, 
+        rgba(0, 100, 255, 0.2) 50%, rgba(0, 100, 255, 0.2) 75%, transparent 75%, transparent) !important;
+}
+*/
+/* ✅ iframe 오버레이 호버 시 더 진하게 강조
+.iframe-overlay:hover, .svg-overlay:hover {
+    background-image: 
+        linear-gradient(45deg, rgba(255, 0, 0, 0.3) 25%, transparent 25%, transparent 50%, 
+        rgba(255, 0, 0, 0.3) 50%, rgba(255, 0, 0, 0.3) 75%, transparent 75%, transparent) !important;
+}
+ */
+/* ✅ SVG 오버레이 호버 시 파란색 더 진하게
+.svg-overlay:hover {
+    background-image: 
+        linear-gradient(45deg, rgba(0, 100, 255, 0.3) 25%, transparent 25%, transparent 50%, 
+        rgba(0, 100, 255, 0.3) 50%, rgba(0, 100, 255, 0.3) 75%, transparent 75%, transparent) !important;
+}
+ */
+
+.iframe-overlay:hover,
+.svg-overlay:hover {
+	background-image:
+		linear-gradient(45deg, rgba(255, 0, 0, 0.15) 25%, transparent 25%, transparent 50%,
+			rgba(255, 0, 0, 0.15) 50%, rgba(255, 0, 0, 0.15) 75%, transparent 75%, transparent) !important;
+}
+
+.svg-overlay:hover {
+	background-image:
+		linear-gradient(45deg, rgba(0, 100, 255, 0.3) 25%, transparent 25%, transparent 50%,
+			rgba(0, 100, 255, 0.3) 50%, rgba(0, 100, 255, 0.3) 75%, transparent 75%, transparent) !important;
+}
+
+/* 고대비 모드 지원 */
+@media (prefers-contrast: high) {
+
+	.iframe-overlay {
+		border: 2px dashed #000000;
+		background: rgba(255, 0, 0, 0.3);
+	}
+}
+
+/***************************************/
+
+
+.selected-element {
+	animation: selected-pulse 3s infinite !important;
+}
+
+/* 선택 요소 애니메이션 */
+@keyframes selected-pulse {
+	0% {
+		opacity: 0.6;
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0.6;
+	}
+}
+
+@keyframes iframe-pulse {
+	0% {
+		opacity: 0.6;
+		border-width: 3px;
+	}
+
+	50% {
+		opacity: 1;
+		border-width: 4px;
+	}
+
+	100% {
+		opacity: 0.6;
+		border-width: 3px;
+	}
+}
+
+
+/*---------------------------------------------------------*/
+
+/* ✅ 추가: 통합 T선 요소 스타일 */
+.t-line-with-markers {
+	position: absolute;
+	height: 2px;
+	background-color: #4285F4;
+	z-index: 2147483631;
+	pointer-events: none;
+}
+
+.t-line-with-markers::before,
+.t-line-with-markers::after {
+	content: '';
+	position: absolute;
+	background-color: inherit;
+	width: 2px;
+	height: 10px;
+	top: -4px;
+}
+
+.t-line-with-markers::before {
+	left: 0;
+}
+
+.t-line-with-markers::after {
+	right: 0;
+}
+
+/* 수직선용 변형 */
+.t-line-vertical-with-markers {
+	position: absolute;
+	width: 2px;
+	background-color: #4285F4;
+	z-index: 2147483631;
+	pointer-events: none;
+}
+
+.t-line-vertical-with-markers::before,
+.t-line-vertical-with-markers::after {
+	content: '';
+	position: absolute;
+	background-color: inherit;
+	width: 10px;
+	height: 2px;
+	left: -4px;
+}
+
+.t-line-vertical-with-markers::before {
+	top: 0;
+}
+
+.t-line-vertical-with-markers::after {
+	bottom: 0;
+}
+
+/*---------------------------------------------------------*/
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+	#web-inspector-panel {
+		width: 300px !important;
+	}
+
+	.measurement-text {
+		padding: 1px 3px;
+	}
+}
+
+/* 고대비 모드 지원 */
+@media (prefers-contrast: high) {
+	.highlight-element {
+		border-width: 3px;
+		background-color: transparent;
+	}
+
+	.selected-element {
+		border-width: 4px;
+		background-color: transparent;
+	}
+}
+
+/*---------------------------------------------------------*/
+
+/* ✅ 추가: 측정 요소에 마우스 이벤트 완전 차단 */
+.measurement-line,
+.measurement-text,
+.child-highlight,
+.padding-highlight,
+.margin-value-text,
+.padding-value-text,
+.t-line-with-markers,
+.t-line-vertical-with-markers {
+	pointer-events: none !important;
+}
+
+

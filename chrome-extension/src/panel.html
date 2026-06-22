@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="panel.css">
+    <style>
+        /* ✅ 드래그 핸들러 스타일 */
+        .panel-drag-handle {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            cursor: move;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+            border-radius: 8px 8px 0 0;
+            user-select: none;
+        }
+        
+        .panel-drag-handle:hover {
+            background: linear-gradient(135deg, #5a0db5 0%, #1c6ae4 100%);
+        }
+        
+        .panel-drag-handle::before {
+            content: '⠿ 드래그하여 이동';
+            opacity: 0.9;
+        }
+        
+        /* ✅ 패널 컨테이너 조정 */
+        .panel-container {
+            margin-top: 25px;
+            height: calc(100vh - 25px);
+        }
+        
+        /* ✅ 패널 전체 스타일 */
+        #web-inspector-panel {
+            position: fixed;
+            top: 50px;
+            right: 10px;
+            width: 350px;
+            height: 500px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            z-index: 10000;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- ✅ 드래그 핸들러 -->
+    <div class="panel-drag-handle" id="panelDragHandle"></div>
+    
+    <div class="panel-container">
+        <div class="panel-content accodient-box">
+            <!-- 아코디언 섹션: Basic Information -->
+            <div class="accordion-section">
+                <div class="accordion-header">
+                    <h3>Basic Information</h3>
+                    <span class="accordion-icon">▼</span>
+                </div>
+                <div class="accordion-content active">
+                    <div class="info-section">
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Tag:</label>
+                                <div class="value-container">
+                                    <span id="info-tag">N/A</span>
+                                    <button class="copy-btn" data-copy="info-tag"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>ID:</label>
+                                <div class="value-container">
+                                    <span id="info-id">N/A</span>
+                                    <button class="copy-btn" data-copy="info-id"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Classes:</label>
+                                <div class="code-container">
+                                    <pre id="info-classes">No element selected</pre>
+                                    <button class="copy-btn" data-copy="info-classes"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Dimensions</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Width:</label>
+                                <div class="value-container">
+                                    <span id="info-width">N/A</span>
+                                    <button class="copy-btn" data-copy="info-width"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Height:</label>
+                                <div class="value-container">
+                                    <span id="info-height">N/A</span>
+                                    <button class="copy-btn" data-copy="info-height"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Position:</label>
+                                <div class="value-container">
+                                    <span id="info-position">N/A</span>
+                                    <button class="copy-btn" data-copy="info-position"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Margins & Padding</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Margin:</label>
+                                <div class="value-container">
+                                    <span id="info-margin">N/A</span>
+                                    <button class="copy-btn" data-copy="info-margin"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Padding:</label>
+                                <div class="value-container">
+                                    <span id="info-padding">N/A</span>
+                                    <button class="copy-btn" data-copy="info-padding"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Typography</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Font:</label>
+                                <div class="code-container">
+                                    <pre id="info-font">No element selected</pre>
+                                    <button class="copy-btn" data-copy="info-font"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Size:</label>
+                                <div class="value-container">
+                                    <span id="info-font-size">N/A</span>
+                                    <button class="copy-btn" data-copy="info-font-size"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Color:</label>
+                                <div class="value-container">
+                                    <span id="info-color">N/A</span>
+                                    <button class="copy-btn" data-copy="info-color"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>Background</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Color:</label>
+                                <div class="value-container">
+                                    <span id="info-bg-color">N/A</span>
+                                    <button class="copy-btn" data-copy="info-bg-color"></button>
+                                </div>
+                            </div>
+                            <div class="info-item">
+                                <label>Image:</label>
+                                <div class="code-container">
+                                    <pre id="info-bg-image">No element selected</pre>
+                                    <button class="copy-btn" data-copy="info-bg-image"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>CSS Code</h3>
+                        <div class="code-container">
+                            <pre id="info-css">No element selected</pre>
+                            <button class="copy-btn large" data-copy="info-css">Copy CSS</button>
+                        </div>
+                    </div>
+
+                    <div class="info-section">
+                        <h3>HTML Code</h3>
+                        <div class="code-container">
+                            <pre id="info-html">No element selected</pre>
+                            <button class="copy-btn large" data-copy="info-html">Copy HTML</button>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="download-html" class="action-btn">Download HTML</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="panel.js"></script>
+</body>
+</html>

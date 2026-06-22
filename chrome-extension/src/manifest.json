@@ -1,0 +1,103 @@
+{
+	"manifest_version": 3,
+	"name": "__MSG_extensionName__",
+	"version": "1.3.0",
+	"description": "__MSG_extensionDescription__",
+	"default_locale": "en",
+	"permissions": [
+		"activeTab",
+		"storage",
+		"scripting",
+		"downloads",
+		"contextMenus",
+		"scripting"
+	],
+	"host_permissions": [
+		"https://*/*",
+		"http://*/*",
+		"file://*/*"
+	],
+	"background": {
+		"service_worker": "background.js"
+	},
+	"content_scripts": [
+		{
+			"matches": [
+				"<all_urls>"
+			],
+			"js": [
+				"modules/config-manager.js",
+				"modules/state-manager.js",
+				"modules/util.js",
+				"modules/toggle-manager.js",
+				"modules/element-analyzer.js",
+				"modules/ui-manager.js",
+				"modules/element-info.js",
+				"modules/download-manager.js",
+				"main-content.js"
+			],
+			"css": [
+				"main-content.css"
+			],
+			"run_at": "document_idle"
+		}
+	],
+	"action": {
+		"default_title": "__MSG_toggleInspector__",
+		"default_icon": {
+			"16": "icons/icon16.png",
+			"48": "icons/icon48.png",
+			"128": "icons/icon128.png"
+		}
+	},
+	"options_ui": {
+		"page": "options.html",
+		"open_in_tab": true
+	},
+	"web_accessible_resources": [
+		{
+			"resources": [
+				//"panel.html",
+				"panel.css",
+				"icons/*.png",
+				"_locales/*/*.json",
+				"main-content.css",
+				"modules/config-manager.js",
+				"modules/state-manager.js",
+				"modules/util.js",
+				"modules/toggle-manager.js",
+				"modules/element-analyzer.js",
+				"modules/ui-manager.js",
+				"modules/element-info.js",
+				"modules/download-manager.js",
+				"main-content.js"
+			],
+			"matches": [
+				"https://*/*",
+				"http://*/*",
+				"file://*/*"
+			]
+		}
+	],
+	"icons": {
+		"16": "icons/icon16.png",
+		"48": "icons/icon48.png",
+		"128": "icons/icon128.png"
+	},
+	"commands": {
+		"toggle-inspector": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+I",
+				"mac": "Command+Shift+I"
+			},
+			"description": "__MSG_toggleInspector__"
+		},
+		"toggle-measurement": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+M",
+				"mac": "Command+Shift+M"
+			},
+			"description": "__MSG_toggleMeasurement__"
+		}
+	}
+}
